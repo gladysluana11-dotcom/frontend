@@ -1,0 +1,5 @@
+node_modules/
+dist/
+docs/
+.github/
+src/api/schema.d.ts
