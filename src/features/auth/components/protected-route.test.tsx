@@ -21,7 +21,11 @@ function LocationText() {
   return <p>Ruta: {location.pathname}</p>
 }
 
-function renderRoute(user: SessionUser | null, initialPath = '/privado') {
+function renderRoute(
+  user: SessionUser | null,
+  initialPath = '/privado',
+  roles?: string[],
+) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   })
@@ -32,9 +36,10 @@ function renderRoute(user: SessionUser | null, initialPath = '/privado') {
       <MemoryRouter initialEntries={[initialPath]}>
         <LocationText />
         <Routes>
-          <Route element={<ProtectedRoute />}>
+          <Route element={<ProtectedRoute roles={roles} />}>
             <Route path="/privado" element={<p>Contenido protegido</p>} />
           </Route>
+          <Route path="/403" element={<p>Acceso denegado</p>} />
           <Route element={<ProtectedRoute requirePasswordChangeRoute />}>
             <Route
               path="/cambiar-contrasena"
@@ -65,5 +70,25 @@ describe('ProtectedRoute', () => {
 
     expect(await screen.findByText('Cambiar contraseña')).toBeInTheDocument()
     expect(screen.getByText('Ruta: /cambiar-contrasena')).toBeInTheDocument()
+  })
+
+  it('deja entrar a un usuario con uno de los roles permitidos', async () => {
+    renderRoute(
+      { ...authenticatedUser, roles: ['Director'] } as unknown as SessionUser,
+      '/privado',
+      ['director'],
+    )
+
+    expect(await screen.findByText('Contenido protegido')).toBeInTheDocument()
+  })
+
+  it('envía a la pantalla 403 si el rol no está permitido', async () => {
+    renderRoute(
+      { ...authenticatedUser, roles: ['Docente'] } as unknown as SessionUser,
+      '/privado',
+      ['director'],
+    )
+
+    expect(await screen.findByText('Acceso denegado')).toBeInTheDocument()
   })
 })

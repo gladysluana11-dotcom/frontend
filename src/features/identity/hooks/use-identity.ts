@@ -30,13 +30,30 @@ function colorName(value: unknown): 'primary' | 'secondary' | undefined {
   return undefined
 }
 
-function extractColors(
-  colors: unknown[],
+/**
+ * La API devuelve los colores como objeto ({ primario, secundario }); el contrato los describe
+ * como lista. Se aceptan ambas formas para que un cambio en el backend no rompa la pantalla.
+ */
+export function extractColors(
+  colors: unknown,
 ): Partial<Record<'primary' | 'secondary', string>> {
   const result: Partial<Record<'primary' | 'secondary', string>> = {}
+
+  if (isRecord(colors) && !Array.isArray(colors)) {
+    const primary = toCssColor(
+      colors.primario ?? colors.primary ?? colors.principal,
+    )
+    const secondary = toCssColor(colors.secundario ?? colors.secondary)
+    if (primary) result.primary = primary
+    if (secondary) result.secondary = secondary
+    return result
+  }
+
+  if (!Array.isArray(colors)) return result
+
   let unkeyedColorIndex = 0
 
-  for (const entry of colors) {
+  for (const entry of colors as unknown[]) {
     if (typeof entry === 'string') {
       const value = toCssColor(entry)
       const name = unkeyedColorIndex === 0 ? 'primary' : 'secondary'

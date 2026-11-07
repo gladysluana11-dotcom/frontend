@@ -33,6 +33,21 @@ function renderCan(permission: string) {
   )
 }
 
+function renderCanByRole(roles: unknown, allowed: string | string[]) {
+  const client = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  })
+  client.setQueryData(sessionQueryKey, { ...user, roles })
+
+  return render(
+    <QueryClientProvider client={client}>
+      <Can rol={allowed} fallback={<p>Sin permiso</p>}>
+        <p>Acción disponible</p>
+      </Can>
+    </QueryClientProvider>,
+  )
+}
+
 describe('Can', () => {
   it('muestra la acción cuando el usuario tiene el permiso', () => {
     renderCan('alumnos.ver')
@@ -41,6 +56,16 @@ describe('Can', () => {
 
   it('oculta la acción cuando falta el permiso', () => {
     renderCan('alumnos.editar')
+    expect(screen.getByText('Sin permiso')).toBeInTheDocument()
+  })
+
+  it('permite por rol cuando la API entrega una lista de roles', () => {
+    renderCanByRole(['Tesorería'], ['director', 'tesoreria'])
+    expect(screen.getByText('Acción disponible')).toBeInTheDocument()
+  })
+
+  it('oculta por rol cuando el usuario no tiene el rol', () => {
+    renderCanByRole(['Docente'], 'director')
     expect(screen.getByText('Sin permiso')).toBeInTheDocument()
   })
 })

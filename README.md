@@ -52,7 +52,11 @@ npm run build
 - `src/shared`: cliente HTTP, UI, utilidades y textos comunes.
 - `src/api`: tipos generados desde el contrato OpenAPI.
 
-La pantalla de inicio de sesión envía email y contraseña sin el subdominio: la especificación indica que el subdominio identifica la institución visualmente y que el backend valida la pertenencia del usuario. El contrato `docs/api.json` aún no declara el `requestBody` del login; el cliente adapta ese endpoint con los campos que usa el formulario hasta que se complete el contrato. Las demás operaciones utilizan los tipos generados.
+El login envía `email` y `password`. En desarrollo agrega además `subdominio` (valor de `VITE_SUBDOMINIO_DEV`, por defecto `salesian-innova`), porque el backend lo exige solo en local; en los subdominios reales el backend valida contra el origen de la SPA y no se envía. El contrato `docs/api.json` aún no declara el `requestBody` del login, así que el cliente adapta ese endpoint a mano; si el backend usa otros nombres de campo, se cambian en `src/features/auth/api/auth-api.ts`.
+
+### Roles y permisos
+
+`/auth/me` devuelve los roles del usuario pero todavía no la lista de permisos. Mientras tanto, la interfaz decide qué mostrar por **rol** (`<Can rol="director">`, `roles` en `ProtectedRoute`); `permiso` funcionará cuando el backend incluya `permisos` en el usuario. Los roles se aceptan como lista de textos, lista de objetos o mapa, sin distinguir mayúsculas ni tildes. La autorización real siempre ocurre en el backend.
 
 El esquema actual de `GET /v1/auth/me` no incluye permisos efectivos del usuario. `Can`, `usePermisos` y la guardia de ruta admiten `permisos`/`permissions` cuando el backend los exponga; mientras no estén en el contrato y la respuesta, el frontend no supone permisos que no puede verificar.
 

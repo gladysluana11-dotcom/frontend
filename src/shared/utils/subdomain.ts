@@ -18,6 +18,16 @@ export function resolveSchoolSubdomain(
   return normalizedHost.split('.')[0] ?? ''
 }
 
+/**
+ * Subdominio que se envía en el login. El backend lo exige solo en desarrollo local;
+ * en los subdominios reales valida contra el origen de la SPA.
+ */
+export function getLoginSubdomain(): string | undefined {
+  if (import.meta.env.MODE !== 'development') return undefined
+  const subdomain = import.meta.env.VITE_SUBDOMINIO_DEV?.trim()
+  return subdomain ? subdomain : undefined
+}
+
 export function getCurrentSchoolSubdomain(): string {
   return resolveSchoolSubdomain(
     window.location.hostname,

@@ -6,16 +6,20 @@ import { logout } from '../api/auth-api'
 import { sessionQueryKey, useSession } from '../hooks/use-session'
 import { useIdleSession } from '../../../shared/hooks/use-idle-session'
 import { texts } from '../../../shared/texts'
+import { extractRoles, normalizeRole } from '../utils/roles'
 import { StatusState } from '../../../shared/ui/status-state'
 
 type ProtectedRouteProps = {
   requirePasswordChangeRoute?: boolean
   permission?: string
+  /** Roles que pueden entrar a la ruta (por ejemplo ['director', 'administrador']). */
+  roles?: string[] | undefined
 }
 
 export function ProtectedRoute({
   requirePasswordChangeRoute = false,
   permission,
+  roles,
 }: ProtectedRouteProps) {
   const { data: user, isError, isPending, refetch } = useSession()
   const location = useLocation()
@@ -63,8 +67,11 @@ export function ProtectedRoute({
     return <Navigate to="/" replace />
   }
 
-  if (permission && !hasPermission(user, permission)) {
-    return <Navigate to="/403" replace />
+  if (permission || roles) {
+    const allowed =
+      (permission !== undefined && hasPermission(user, permission)) ||
+      (roles !== undefined && hasAnyRole(user, roles))
+    if (!allowed) return <Navigate to="/403" replace />
   }
 
   return (
@@ -80,6 +87,11 @@ export function ProtectedRoute({
       <Outlet />
     </>
   )
+}
+
+function hasAnyRole(user: object, roles: string[]): boolean {
+  const userRoles = extractRoles(user)
+  return roles.some((role) => userRoles.includes(normalizeRole(role)))
 }
 
 function hasPermission(user: object, permission: string): boolean {

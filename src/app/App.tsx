@@ -148,7 +148,6 @@ function AppRoutes() {
                 <Route index element={<DashboardPage />} />
               </Route>
             </Route>
-            <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>

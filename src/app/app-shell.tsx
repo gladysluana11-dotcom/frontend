@@ -12,11 +12,11 @@ import {
   useIdentity,
 } from '../features/identity/hooks/use-identity'
 import type { SchoolIdentity } from '../features/identity/api/identity-api'
+import { primaryRoleLabel } from '../features/auth/utils/roles'
 import { queryClient } from './query-client'
 
 function userRole(user: SessionUser): string {
-  const roleNames = Object.keys(user.roles)
-  return roleNames[0]?.replaceAll('_', ' ') ?? texts.auth.userFallback
+  return primaryRoleLabel(user, texts.auth.userFallback)
 }
 
 export default function AppShell() {

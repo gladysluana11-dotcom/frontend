@@ -6,6 +6,7 @@ import { texts } from '../texts'
 type LoginRequest = {
   email: string
   password: string
+  subdominio?: string
 }
 
 type LoginOperation = Omit<paths['/v1/auth/login']['post'], 'requestBody'> & {
@@ -43,6 +44,7 @@ async function ensureCsrfCookie(): Promise<void> {
   if (!csrfRequest) {
     csrfRequest = fetch(`${apiRoot}/sanctum/csrf-cookie`, {
       credentials: 'include',
+      headers: jsonHeaders,
     })
       .then((response) => {
         if (!response.ok) {
@@ -61,9 +63,16 @@ async function ensureCsrfCookie(): Promise<void> {
   await csrfRequest
 }
 
+/**
+ * Sin `Accept: application/json`, Laravel trata un 401 como una visita de navegador y
+ * intenta redirigir a una página de login (ruta inexistente en una API), lo que termina en 500.
+ */
+const jsonHeaders = { Accept: 'application/json' }
+
 export const api = createClient<ApiPaths>({
   baseUrl: apiBaseUrl,
   credentials: 'include',
+  headers: jsonHeaders,
 })
 
 api.use({

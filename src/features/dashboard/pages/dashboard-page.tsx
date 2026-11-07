@@ -1,5 +1,6 @@
 import { useSession } from '../../auth/hooks/use-session'
 import { texts } from '../../../shared/texts'
+import { primaryRoleLabel } from '../../auth/utils/roles'
 import {
   Card,
   CardContent,
@@ -12,7 +13,7 @@ import { PageFrame } from '../../../shared/ui/page-frame'
 export default function DashboardPage() {
   const { data: user } = useSession()
   const role = user
-    ? Object.keys(user.roles)[0]?.replaceAll('_', ' ')
+    ? primaryRoleLabel(user, texts.auth.userFallback)
     : undefined
 
   return (

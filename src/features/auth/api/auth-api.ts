@@ -1,5 +1,6 @@
 import type { paths } from '../../../api/schema'
 import { api, executeApi } from '../../../shared/api/client'
+import { getLoginSubdomain } from '../../../shared/utils/subdomain'
 
 type UserResponse =
   paths['/v1/auth/me']['get']['responses'][200]['content']['application/json']
@@ -11,10 +12,21 @@ type LoginRequest = {
   password: string
 }
 
+type LoginBody = LoginRequest & { subdominio?: string }
+
+/** Arma el cuerpo del login; agrega el subdominio solo cuando corresponde (desarrollo). */
+export function buildLoginBody(
+  credentials: LoginRequest,
+  subdomain: string | undefined,
+): LoginBody {
+  return subdomain
+    ? { ...credentials, subdominio: subdomain }
+    : { ...credentials }
+}
+
 export async function login(credentials: LoginRequest): Promise<SessionUser> {
-  const response = await executeApi(() =>
-    api.POST('/v1/auth/login', { body: credentials }),
-  )
+  const body = buildLoginBody(credentials, getLoginSubdomain())
+  const response = await executeApi(() => api.POST('/v1/auth/login', { body }))
   return response.data.usuario
 }
 
