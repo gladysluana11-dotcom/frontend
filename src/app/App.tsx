@@ -13,6 +13,10 @@ import { Toaster, toast } from 'sonner'
 import { queryClient } from './query-client'
 import { ProtectedRoute } from '../features/auth/components/protected-route'
 import {
+  STUDENT_VIEW_ROLES,
+  STUDENT_WRITE_ROLES,
+} from '../features/students/roles'
+import {
   useIdentity,
   useApplySchoolIdentity,
 } from '../features/identity/hooks/use-identity'
@@ -34,6 +38,18 @@ const ChangePasswordPage = lazy(
 )
 const DashboardPage = lazy(
   () => import('../features/dashboard/pages/dashboard-page'),
+)
+const StudentsPage = lazy(
+  () => import('../features/students/pages/students-page'),
+)
+const StudentDetailPage = lazy(
+  () => import('../features/students/pages/student-detail-page'),
+)
+const StudentCreatePage = lazy(
+  () => import('../features/students/pages/student-create-page'),
+)
+const StudentEditPage = lazy(
+  () => import('../features/students/pages/student-edit-page'),
 )
 const AppShell = lazy(() => import('../app/app-shell'))
 const ForbiddenPage = lazy(() => import('../app/pages/forbidden-page'))
@@ -146,6 +162,20 @@ function AppRoutes() {
             <Route element={<ProtectedRoute />}>
               <Route element={<AppShell />}>
                 <Route index element={<DashboardPage />} />
+                <Route element={<ProtectedRoute roles={STUDENT_WRITE_ROLES} />}>
+                  <Route
+                    path="/alumnos/nuevo"
+                    element={<StudentCreatePage />}
+                  />
+                  <Route
+                    path="/alumnos/:id/editar"
+                    element={<StudentEditPage />}
+                  />
+                </Route>
+                <Route element={<ProtectedRoute roles={STUDENT_VIEW_ROLES} />}>
+                  <Route path="/alumnos" element={<StudentsPage />} />
+                  <Route path="/alumnos/:id" element={<StudentDetailPage />} />
+                </Route>
               </Route>
             </Route>
             <Route path="*" element={<NotFoundPage />} />

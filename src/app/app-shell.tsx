@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { BookOpen, GraduationCap, LogOut, Menu, X } from 'lucide-react'
+import { GraduationCap, LogOut, Menu, X } from 'lucide-react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { logout, type SessionUser } from '../features/auth/api/auth-api'
@@ -12,7 +12,8 @@ import {
   useIdentity,
 } from '../features/identity/hooks/use-identity'
 import type { SchoolIdentity } from '../features/identity/api/identity-api'
-import { primaryRoleLabel } from '../features/auth/utils/roles'
+import { extractRoles, primaryRoleLabel } from '../features/auth/utils/roles'
+import { visibleNavigation, type NavigationItem } from './navigation'
 import { queryClient } from './query-client'
 
 function userRole(user: SessionUser): string {
@@ -48,6 +49,8 @@ export default function AppShell() {
 
   if (!user) return <StatusState state="loading" />
 
+  const navigation = visibleNavigation(extractRoles(user))
+
   return (
     <div className="min-h-screen md:flex">
       <aside className="hidden w-64 shrink-0 border-r bg-white md:flex md:flex-col">
@@ -56,7 +59,7 @@ export default function AppShell() {
           aria-label={texts.navigation.primaryNavigation}
           className="space-y-1 px-3 py-5"
         >
-          <DashboardLink onNavigate={() => setMenuOpen(false)} />
+          <NavLinks items={navigation} onNavigate={() => setMenuOpen(false)} />
         </nav>
         <p className="mt-auto px-5 pb-5 text-xs text-muted-foreground">
           {texts.navigation.futureModules}
@@ -115,7 +118,10 @@ export default function AppShell() {
         {menuOpen ? (
           <div className="border-b bg-white px-3 py-3 md:hidden">
             <nav aria-label={texts.navigation.mobileNavigation}>
-              <DashboardLink onNavigate={() => setMenuOpen(false)} />
+              <NavLinks
+                items={navigation}
+                onNavigate={() => setMenuOpen(false)}
+              />
             </nav>
           </div>
         ) : null}
@@ -151,22 +157,33 @@ function Brand({ identity }: { identity: SchoolIdentity | undefined }) {
   )
 }
 
-function DashboardLink({ onNavigate }: { onNavigate: () => void }) {
+function NavLinks({
+  items,
+  onNavigate,
+}: {
+  items: NavigationItem[]
+  onNavigate: () => void
+}) {
   return (
-    <NavLink
-      to="/"
-      end
-      onClick={onNavigate}
-      className={({ isActive }) =>
-        `flex min-h-11 items-center gap-3 rounded-md px-3 py-2 text-sm font-medium ${
-          isActive
-            ? 'bg-[var(--school-secondary)] text-[var(--school-primary)]'
-            : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-        }`
-      }
-    >
-      <BookOpen aria-hidden="true" className="size-4" />
-      {texts.navigation.dashboard}
-    </NavLink>
+    <>
+      {items.map((item) => (
+        <NavLink
+          key={item.id}
+          to={item.to}
+          end={item.end ?? false}
+          onClick={onNavigate}
+          className={({ isActive }) =>
+            `flex min-h-11 items-center gap-3 rounded-md px-3 py-2 text-sm font-medium ${
+              isActive
+                ? 'bg-[var(--school-secondary)] text-[var(--school-primary)]'
+                : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+            }`
+          }
+        >
+          <item.icon aria-hidden="true" className="size-4" />
+          {item.label}
+        </NavLink>
+      ))}
+    </>
   )
 }

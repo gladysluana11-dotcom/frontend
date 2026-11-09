@@ -19,7 +19,7 @@ Copy-Item .env.example .env.local
 
 ```env
 VITE_API_URL=http://localhost:8000
-VITE_SUBDOMINIO_DEV=salesianinnova
+VITE_SUBDOMINIO_DEV=salesian-innova
 ```
 
 `VITE_API_URL` es el origen del backend; el cliente agrega `/api` según el contrato. En desarrollo, la identidad se consulta usando `VITE_SUBDOMINIO_DEV`. En producción se usa la primera etiqueta del hostname.
@@ -63,3 +63,11 @@ El esquema actual de `GET /v1/auth/me` no incluye permisos efectivos del usuario
 ## Integración frontend/backend
 
 Levanta el backend Laravel en `http://localhost:8000` y el frontend con `npm run dev`. Para despliegue, `npm run build` genera `dist/`; configura el servidor estático con fallback de rutas SPA y publica el backend bajo el origen indicado por `VITE_API_URL`.
+
+## Cómo agregar un módulo
+
+1. Crear `src/features/<modulo>/` con `api/`, `hooks/`, `components/`, `pages/` y `schemas.ts`.
+2. Validar cada respuesta de la API con Zod (`parseCollection`, `parseResource`, `parseData` en `src/shared/api/collections.ts`); el contrato OpenAPI aún no describe los campos de los recursos.
+3. Para listados usar `useTableState` (estado en la URL) y `DataTable`; la paginación, la búsqueda y el orden los hace la API.
+4. Registrar la ruta en `src/app/App.tsx` con `ProtectedRoute roles={[...]}` y la opción de menú en `src/app/navigation.ts`.
+5. Escribir las pruebas de la página con la API simulada y, si hay respuestas nuevas, una prueba con la respuesta real (ver `students-api.test.ts`).
