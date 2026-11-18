@@ -18,6 +18,14 @@ function extractPermissions(user: object | null | undefined): string[] {
   )
 }
 
+function hasPermissionList(user: object | null | undefined): boolean {
+  if (!user) return false
+  return (
+    ('permisos' in user && Array.isArray(user.permisos)) ||
+    ('permissions' in user && Array.isArray(user.permissions))
+  )
+}
+
 /**
  * Permisos y roles del usuario autenticado. La API entrega hoy los roles; la lista de
  * permisos llegará cuando el backend la incluya en /auth/me. Hasta entonces, la
@@ -27,11 +35,13 @@ export function usePermisos() {
   const { data: user } = useSession()
   const permissions = useMemo(() => extractPermissions(user), [user])
   const permissionSet = useMemo(() => new Set(permissions), [permissions])
+  const hayPermisos = useMemo(() => hasPermissionList(user), [user])
   const roles = useMemo(() => extractRoles(user), [user])
   const roleSet = useMemo(() => new Set(roles), [roles])
 
   return {
     permisos: permissions,
+    hayPermisos,
     roles,
     tienePermiso: (permission: string) => permissionSet.has(permission),
     tieneAlgunPermiso: (required: string[]) =>

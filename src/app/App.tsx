@@ -17,6 +17,12 @@ import {
   STUDENT_WRITE_ROLES,
 } from '../features/students/roles'
 import {
+  PAYMENT_REGISTER_ROLES,
+  PAYMENT_VIEW_ROLES,
+} from '../features/payments/roles'
+import { CASH_CLOSE_ROLES, TARIFF_VIEW_ROLES } from '../features/fees/roles'
+import { DEBT_VIEW_ROLES, REPORT_VIEW_ROLES } from '../features/debts/roles'
+import {
   useIdentity,
   useApplySchoolIdentity,
 } from '../features/identity/hooks/use-identity'
@@ -51,6 +57,28 @@ const StudentCreatePage = lazy(
 const StudentEditPage = lazy(
   () => import('../features/students/pages/student-edit-page'),
 )
+const PaymentsPage = lazy(
+  () => import('../features/payments/pages/payments-page'),
+)
+const NewPaymentPage = lazy(
+  () => import('../features/payments/pages/new-payment-page'),
+)
+const PaymentDetailPage = lazy(
+  () => import('../features/payments/pages/payment-detail-page'),
+)
+const StudentAccountPage = lazy(
+  () => import('../features/payments/pages/student-account-page'),
+)
+const EnrollmentDetailPage = lazy(
+  () => import('../features/payments/pages/enrollment-detail-page'),
+)
+const TariffsPage = lazy(() => import('../features/fees/pages/tariffs-page'))
+const CashboxPage = lazy(() => import('../features/fees/pages/cashbox-page'))
+const DebtsPage = lazy(() => import('../features/debts/pages/debts-page'))
+const DebtByClassPage = lazy(
+  () => import('../features/debts/pages/debt-by-class-page'),
+)
+const ReportsPage = lazy(() => import('../features/reports/pages/reports-page'))
 const AppShell = lazy(() => import('../app/app-shell'))
 const ForbiddenPage = lazy(() => import('../app/pages/forbidden-page'))
 const NotFoundPage = lazy(() => import('../app/pages/not-found-page'))
@@ -175,6 +203,82 @@ function AppRoutes() {
                 <Route element={<ProtectedRoute roles={STUDENT_VIEW_ROLES} />}>
                   <Route path="/alumnos" element={<StudentsPage />} />
                   <Route path="/alumnos/:id" element={<StudentDetailPage />} />
+                  <Route
+                    path="/matriculas/:id"
+                    element={<EnrollmentDetailPage />}
+                  />
+                </Route>
+                <Route
+                  element={
+                    <ProtectedRoute
+                      permission="pagos.ver"
+                      roles={PAYMENT_VIEW_ROLES}
+                    />
+                  }
+                >
+                  <Route path="/pagos" element={<PaymentsPage />} />
+                  <Route path="/pagos/:id" element={<PaymentDetailPage />} />
+                  <Route
+                    path="/alumnos/:id/estado-cuenta"
+                    element={<StudentAccountPage />}
+                  />
+                </Route>
+                <Route
+                  element={
+                    <ProtectedRoute
+                      permission="deudas.ver"
+                      roles={DEBT_VIEW_ROLES}
+                    />
+                  }
+                >
+                  <Route path="/deudas" element={<DebtsPage />} />
+                  <Route
+                    path="/deudas/por-aula"
+                    element={<DebtByClassPage />}
+                  />
+                </Route>
+                <Route
+                  element={
+                    <ProtectedRoute
+                      permission="reportes.ver"
+                      roles={REPORT_VIEW_ROLES}
+                    />
+                  }
+                >
+                  <Route path="/reportes" element={<ReportsPage />} />
+                </Route>
+                <Route
+                  element={
+                    <ProtectedRoute
+                      permission="pagos.registrar"
+                      roles={PAYMENT_REGISTER_ROLES}
+                    />
+                  }
+                >
+                  <Route path="/pagos/nuevo" element={<NewPaymentPage />} />
+                </Route>
+                <Route
+                  element={
+                    <ProtectedRoute
+                      permission="tarifas.ver"
+                      roles={TARIFF_VIEW_ROLES}
+                    />
+                  }
+                >
+                  <Route
+                    path="/configuracion/tarifas"
+                    element={<TariffsPage />}
+                  />
+                </Route>
+                <Route
+                  element={
+                    <ProtectedRoute
+                      permission="caja.cerrar"
+                      roles={CASH_CLOSE_ROLES}
+                    />
+                  }
+                >
+                  <Route path="/caja" element={<CashboxPage />} />
                 </Route>
               </Route>
             </Route>

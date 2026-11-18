@@ -25,6 +25,7 @@ function renderRoute(
   user: SessionUser | null,
   initialPath = '/privado',
   roles?: string[],
+  permission?: string,
 ) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
@@ -36,7 +37,14 @@ function renderRoute(
       <MemoryRouter initialEntries={[initialPath]}>
         <LocationText />
         <Routes>
-          <Route element={<ProtectedRoute roles={roles} />}>
+          <Route
+            element={
+              <ProtectedRoute
+                {...(permission ? { permission } : {})}
+                {...(roles ? { roles } : {})}
+              />
+            }
+          >
             <Route path="/privado" element={<p>Contenido protegido</p>} />
           </Route>
           <Route path="/403" element={<p>Acceso denegado</p>} />
@@ -90,5 +98,46 @@ describe('ProtectedRoute', () => {
     )
 
     expect(await screen.findByText('Acceso denegado')).toBeInTheDocument()
+  })
+
+  it('usa roles como fallback cuando la sesión todavía no trae permisos', async () => {
+    renderRoute(
+      { ...authenticatedUser, roles: ['Director'] } as unknown as SessionUser,
+      '/privado',
+      ['director'],
+      'pagos.ver',
+    )
+
+    expect(await screen.findByText('Contenido protegido')).toBeInTheDocument()
+  })
+
+  it('prioriza los permisos recibidos por la sesión sobre los roles', async () => {
+    renderRoute(
+      {
+        ...authenticatedUser,
+        roles: ['Director'],
+        permisos: [],
+      } as unknown as SessionUser,
+      '/privado',
+      ['director'],
+      'pagos.ver',
+    )
+
+    expect(await screen.findByText('Acceso denegado')).toBeInTheDocument()
+  })
+
+  it('permite entrar si la sesión incluye el permiso, aunque el rol no esté en el fallback', async () => {
+    renderRoute(
+      {
+        ...authenticatedUser,
+        roles: ['Apoderado'],
+        permisos: ['pagos.ver'],
+      } as unknown as SessionUser,
+      '/privado',
+      ['director'],
+      'pagos.ver',
+    )
+
+    expect(await screen.findByText('Contenido protegido')).toBeInTheDocument()
   })
 })

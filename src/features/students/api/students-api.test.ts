@@ -344,9 +344,10 @@ describe('students-api con respuestas reales', () => {
       expect(request?.headers.get('content-type')).toMatch(
         /^multipart\/form-data; boundary=/,
       )
-      const data = await request?.formData()
-      // El entorno de pruebas puede renombrar el archivo; lo que importa es el campo y el contenido.
-      expect((data?.get('foto') as Blob).size).toBe(3)
+      const body = await request?.clone().text()
+      // Node y jsdom usan distintas clases File; verifica los campos del multipart serializado.
+      expect(body).toContain('name="foto"')
+      expect(body).toContain('Content-Type: image/png')
     })
 
     it('crea y vincula un apoderado, enviando null en teléfono y correo vacíos', async () => {

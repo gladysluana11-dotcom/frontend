@@ -23,6 +23,10 @@ import { StatusBadge } from '../components/status-badge'
 import { StudentPhoto } from '../components/student-photo'
 import { useStudent, useStudentHistory } from '../hooks/use-students'
 import { STUDENT_WRITE_ROLES } from '../roles'
+import {
+  PAYMENT_REGISTER_ROLES,
+  PAYMENT_VIEW_ROLES,
+} from '../../payments/roles'
 
 function sexLabel(value: string | null | undefined): string {
   if (value === 'M') return texts.students.male
@@ -143,6 +147,20 @@ export default function StudentDetailPage() {
             {texts.studentsForm.statusTitle}
           </Button>
         </Can>
+        <Can permiso="pagos.ver" rol={PAYMENT_VIEW_ROLES}>
+          <Button asChild variant="outline" size="sm">
+            <Link to={`/alumnos/${data.id}/estado-cuenta`}>
+              {texts.payments.studentAccountLink}
+            </Link>
+          </Button>
+        </Can>
+        <Can permiso="pagos.registrar" rol={PAYMENT_REGISTER_ROLES}>
+          <Button asChild size="sm">
+            <Link to={`/pagos/nuevo?alumno_id=${data.id}`}>
+              {texts.payments.registerLink}
+            </Link>
+          </Button>
+        </Can>
       </div>
 
       {changingStatus ? (
@@ -253,6 +271,9 @@ export default function StudentDetailPage() {
                     <th scope="col" className="py-2 font-semibold">
                       {texts.students.enrollmentWithdrawal}
                     </th>
+                    <th scope="col" className="py-2 font-semibold">
+                      {texts.payments.title}
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
@@ -281,6 +302,14 @@ export default function StudentDetailPage() {
                         {enrollment.fecha_retiro
                           ? `${formatDate(enrollment.fecha_retiro)}${enrollment.motivo ? ` · ${enrollment.motivo}` : ''}`
                           : '—'}
+                      </td>
+                      <td className="py-2">
+                        <Link
+                          className="font-medium text-[var(--school-primary)] hover:underline"
+                          to={`/matriculas/${enrollment.id}?alumno_id=${data.id}`}
+                        >
+                          {texts.students.enrollmentDetails}
+                        </Link>
                       </td>
                     </tr>
                   ))}

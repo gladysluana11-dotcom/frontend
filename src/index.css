@@ -60,3 +60,35 @@ a {
 :focus-visible {
   outline-color: var(--school-primary);
 }
+
+@media print {
+  body {
+    min-width: 0;
+    background: white;
+  }
+
+  aside,
+  header,
+  .screen-only {
+    display: none !important;
+  }
+
+  main {
+    min-height: 0 !important;
+  }
+
+  .printable-receipt {
+    border: 0;
+    box-shadow: none;
+  }
+
+  .printable-debt-section {
+    break-inside: avoid;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .printable-debt-section .overflow-x-auto {
+    overflow: visible;
+  }
+}

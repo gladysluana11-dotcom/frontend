@@ -9,6 +9,10 @@ import {
   CardTitle,
 } from '../../../shared/ui/card'
 import { PageFrame } from '../../../shared/ui/page-frame'
+import { Can } from '../../../shared/ui/can'
+import { DebtAlertsCards } from '../components/debt-alerts-cards'
+import { DirectorDashboard } from '../components/director-dashboard'
+import { DEBT_VIEW_ROLES, FULL_REPORT_ROLES } from '../../debts/roles'
 
 export default function DashboardPage() {
   const { data: user } = useSession()
@@ -22,6 +26,12 @@ export default function DashboardPage() {
       title={`${texts.dashboard.welcome}${user ? `, ${user.nombre}` : ''}`}
       description={texts.dashboard.description}
     >
+      <Can permiso="deudas.ver" rol={DEBT_VIEW_ROLES}>
+        <DebtAlertsCards />
+      </Can>
+      <Can permiso="reportes.ver" rol={FULL_REPORT_ROLES}>
+        <DirectorDashboard />
+      </Can>
       <Card className="max-w-2xl">
         <CardHeader>
           <CardTitle>{texts.dashboard.accountTitle}</CardTitle>

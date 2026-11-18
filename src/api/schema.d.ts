@@ -48,6 +48,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/alertas/cuotas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["alertaCuota.index"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/alumnos": {
         parameters: {
             query?: never;
@@ -432,6 +448,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/caja/resumen": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["caja.resumen"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/caja/cierres": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["caja.cerrar"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/publico/colegio": {
         parameters: {
             query?: never;
@@ -457,6 +505,54 @@ export interface paths {
         };
         get: operations["configuracionColegio.show"];
         put: operations["configuracionColegio.update"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/matriculas/{matricula}/cuotas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["cuota.porMatricula"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/matriculas/{matricula}/generar-cuotas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["cuota.generar"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/cuotas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["cuota.index"];
+        put?: never;
         post?: never;
         delete?: never;
         options?: never;
@@ -496,6 +592,86 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/matriculas/{matricula}/descuentos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["descuento.storeMatricula"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/cuotas/{cuota}/descuentos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["descuento.storeCuota"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/descuentos/{descuento}/anular": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["descuento.anular"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/deudas/por-aula": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["deuda.porAula"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/deudas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["deuda.index"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/documentos-requeridos": {
         parameters: {
             query?: never;
@@ -528,6 +704,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/alumnos/{alumno}/estado-cuenta": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["estadoCuenta.show"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/alumnos/{alumno}/estado-cuenta/pdf": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["estadoCuenta.pdf"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/funciones": {
         parameters: {
             query?: never;
@@ -538,6 +746,22 @@ export interface paths {
         get: operations["funcionColegio.show"];
         put: operations["funcionColegio.update"];
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/alumnos/{alumno}/gestiones-cobranza": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["gestionCobranza.index"];
+        put?: never;
+        post: operations["gestionCobranza.store"];
         delete?: never;
         options?: never;
         head?: never;
@@ -800,6 +1024,70 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/pagos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["pago.index"];
+        put?: never;
+        post: operations["v1.pagos.store"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/pagos/{pago}/constancia": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["v1.pagos.constancia"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/pagos/{pago}/anular": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["pago.anular"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/pagos/{pago}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["pago.show"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/periodos": {
         parameters: {
             query?: never;
@@ -840,6 +1128,70 @@ export interface paths {
             cookie?: never;
         };
         get: operations["permiso.index"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/reportes/matriculas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["reporte.matriculas"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/reportes/pagos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["reporte.pagos"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/reportes/ingresos-mensuales": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["reporte.ingresosMensuales"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/reportes/dashboard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["reporte.dashboard"];
         put?: never;
         post?: never;
         delete?: never;
@@ -891,6 +1243,38 @@ export interface paths {
         put: operations["secciones.update"];
         post?: never;
         delete: operations["secciones.destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/tarifas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["tarifas.index"];
+        put?: never;
+        post: operations["tarifas.store"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/tarifas/{tarifa}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["tarifas.show"];
+        put: operations["tarifas.update"];
+        post?: never;
+        delete: operations["tarifas.destroy"];
         options?: never;
         head?: never;
         patch?: never;
@@ -992,6 +1376,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/pagos/{pago}/voucher": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["v1.pagos.voucher"];
+        put?: never;
+        post: operations["v1.pagos.voucher.store"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1019,6 +1419,7 @@ export interface components {
         ActualizarConfiguracionColegioRequest: {
             numero_cuotas_pension?: number;
             dia_vencimiento?: number;
+            dias_alerta_cuotas?: number;
             serie_recibos?: string;
             /** @enum {string} */
             frecuencia_registro_avance?: "semanal" | "quincenal" | "mensual";
@@ -1047,6 +1448,32 @@ export interface components {
             colegio_id?: string;
             password?: string;
             activo?: string;
+        };
+        /** AdjuntarVoucherPagoRequest */
+        AdjuntarVoucherPagoRequest: {
+            /**
+             * Format: binary
+             * @description Maximum file size: 2048 kilobytes.
+             */
+            voucher: string;
+        };
+        /** AnularDescuentoRequest */
+        AnularDescuentoRequest: {
+            motivo: string;
+        };
+        /** AnularPagoRequest */
+        AnularPagoRequest: {
+            motivo: string;
+        };
+        /** AplicacionPago */
+        AplicacionPago: {
+            id: number;
+            cuota_id: number;
+            monto_aplicado: string;
+            cuota?: {
+                descripcion: string;
+                vencimiento: string;
+            };
         };
         /** CambiarContrasenaRequest */
         CambiarContrasenaRequest: {
@@ -1080,6 +1507,21 @@ export interface components {
              */
             foto: string;
         };
+        /** CerrarCajaRequest */
+        CerrarCajaRequest: {
+            /** Format: date */
+            fecha?: string;
+            observacion?: string | null;
+        };
+        /** CierreCaja */
+        CierreCaja: {
+            id: number;
+            fecha: string;
+            observacion: string | null;
+            total: string;
+            resumen: unknown[];
+            usuario_id: number;
+        };
         /** ConfirmarImportacionAcademicaRequest */
         ConfirmarImportacionAcademicaRequest: {
             token: string;
@@ -1098,6 +1540,58 @@ export interface components {
             colegio_id?: string;
             password?: string;
             activo?: string;
+        };
+        /** Cuota */
+        Cuota: {
+            id: number;
+            matricula_id: number;
+            alumno_id: number;
+            alumno?: {
+                id: number;
+                nombre: string;
+                apellido: string;
+            };
+            anio_escolar_id: number;
+            /** @enum {string} */
+            concepto: "matricula" | "pension";
+            numero: number;
+            descripcion: string;
+            monto_original: string;
+            vencimiento: string;
+            anulada_en: string | null;
+            saldo: string;
+            total_descuentos: string;
+            total_pagos: string;
+            /** @enum {string} */
+            estado: "pagada" | "parcial" | "vencida" | "anulada" | "pendiente";
+        };
+        /** Descuento */
+        Descuento: {
+            id: number;
+            cuota_id: number;
+            /** @enum {string} */
+            tipo: "beca" | "descuento" | "exoneracion";
+            /** @enum {string} */
+            modo: "monto" | "porcentaje";
+            valor: string;
+            monto_calculado: string;
+            motivo: string;
+            usuario_id: number;
+            anulada_en: string | null;
+            motivo_anulacion: string | null;
+        };
+        /** GestionCobranza */
+        GestionCobranza: {
+            id: number;
+            alumno_id: number;
+            usuario_id: number;
+            usuario: string;
+            fecha: string;
+            medio_contacto: string;
+            resultado: string;
+            compromiso_pago_fecha: string | null;
+            compromiso_monto: string | null;
+            observacion: string | null;
         };
         /** GuardarAlumnoRequest */
         GuardarAlumnoRequest: {
@@ -1151,11 +1645,33 @@ export interface components {
             nombre?: string;
             activo?: string;
         };
+        /** GuardarDescuentoRequest */
+        GuardarDescuentoRequest: {
+            /** @enum {string} */
+            tipo: "beca" | "descuento" | "exoneracion";
+            /** @enum {string} */
+            modo: "monto" | "porcentaje";
+            valor: number;
+            motivo: string;
+        };
         /** GuardarDocumentoRequeridoRequest */
         GuardarDocumentoRequeridoRequest: {
             nombre: string;
             obligatorio: boolean;
             activo?: boolean;
+        };
+        /** GuardarGestionCobranzaRequest */
+        GuardarGestionCobranzaRequest: {
+            colegio_id?: string;
+            /** Format: date */
+            fecha: string;
+            /** @enum {string} */
+            medio_contacto: "llamada" | "whatsapp" | "presencial" | "correo";
+            resultado: string;
+            /** Format: date */
+            compromiso_pago_fecha?: string | null;
+            compromiso_monto?: number | null;
+            observacion?: string | null;
         };
         /** GuardarGradoRequest */
         GuardarGradoRequest: {
@@ -1202,6 +1718,16 @@ export interface components {
             capacidad?: number;
             activo?: string;
         };
+        /** GuardarTarifaRequest */
+        GuardarTarifaRequest: {
+            anio_escolar_id: number;
+            grado_id: number;
+            monto_matricula: number;
+            monto_pension: number;
+            numero_cuotas?: number;
+            dia_vencimiento?: number;
+            mes_primera_pension?: number;
+        };
         /** GuardarUnidadDidacticaRequest */
         GuardarUnidadDidacticaRequest: {
             periodo_id?: number;
@@ -1229,6 +1755,52 @@ export interface components {
              * @description Maximum file size: 2048 kilobytes.
              */
             archivo: string;
+        };
+        /** Pago */
+        Pago: {
+            id: number;
+            matricula_id: number;
+            alumno_id: number;
+            usuario_id: number;
+            fecha_pago: string;
+            monto: string;
+            medio: string;
+            numero_operacion: string | null;
+            observacion: string | null;
+            /** @enum {string} */
+            estado: "vigente" | "anulado";
+            constancia: string;
+            anulada_en: string | null;
+            motivo_anulacion: string | null;
+            voucher_disponible: boolean;
+            aplicaciones?: components["schemas"]["AplicacionPago"][];
+        };
+        /** RegistrarPagoRequest */
+        RegistrarPagoRequest: {
+            matricula_id: number;
+            /** Format: date */
+            fecha_pago: string;
+            monto: number;
+            /** @enum {string} */
+            medio: "efectivo" | "deposito" | "transferencia" | "billetera_digital";
+            numero_operacion?: string | null;
+            observacion?: string | null;
+            aplicaciones?: {
+                cuota_id: number;
+                monto: number;
+            }[];
+        };
+        /** Tarifa */
+        Tarifa: {
+            id: number;
+            anio_escolar_id: number;
+            grado_id: number;
+            grado?: string;
+            monto_matricula: string;
+            monto_pension: string;
+            numero_cuotas: number;
+            dia_vencimiento: number;
+            mes_primera_pension: number;
         };
         /** VincularApoderadoRequest */
         VincularApoderadoRequest: {
@@ -1300,6 +1872,42 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    "alertaCuota.index": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            dias_configurados: number;
+                            por_vencer: {
+                                cantidad: number;
+                                monto: string;
+                            };
+                            vencidas: {
+                                cantidad: number;
+                                monto: string;
+                            };
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+        };
+    };
     "alumno.index": {
         parameters: {
             query?: {
@@ -2695,6 +3303,83 @@ export interface operations {
             401: components["responses"]["AuthenticationException"];
         };
     };
+    "caja.resumen": {
+        parameters: {
+            query?: {
+                fecha?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            fecha: string;
+                            total: string;
+                            cantidad_pagos: number;
+                            por_usuario: {
+                                usuario_id: number;
+                                usuario: string;
+                                cantidad: number;
+                                total: string;
+                            }[];
+                            por_medio: {
+                                medio: string;
+                                cantidad: number;
+                                total: string;
+                            }[];
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "caja.cerrar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["CerrarCajaRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            cierre: components["schemas"]["CierreCaja"];
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
     "colegio.publicInfo": {
         parameters: {
             query: {
@@ -2785,6 +3470,146 @@ export interface operations {
                         errors: null;
                         /** @constant */
                         code: "OK";
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "cuota.porMatricula": {
+        parameters: {
+            query?: {
+                page?: number;
+                per_page?: number;
+                sort?: "id" | "vencimiento" | "numero" | "monto_original" | "alumno_id" | "anio_escolar_id";
+                direction?: "asc" | "desc";
+                buscar?: string;
+                activo?: boolean;
+                alumno_id?: number;
+                matricula_id?: number;
+                anio_escolar_id?: number;
+                concepto?: "matricula" | "pension";
+                estado?: "pendiente" | "parcial" | "pagada" | "vencida" | "anulada";
+                vencimiento_desde?: string;
+                vencimiento_hasta?: string;
+                orden?: "asc" | "desc";
+            };
+            header?: never;
+            path: {
+                /** @description The matricula ID */
+                matricula: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            cuotas: components["schemas"]["Cuota"][];
+                            paginacion: {
+                                pagina: number;
+                                por_pagina: number;
+                                total: number;
+                                ultima_pagina: number;
+                                siguiente: string | null;
+                                anterior: string | null;
+                            };
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "cuota.generar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The matricula ID */
+                matricula: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            cuotas: components["schemas"]["Cuota"][];
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "cuota.index": {
+        parameters: {
+            query?: {
+                page?: number;
+                per_page?: number;
+                sort?: "id" | "vencimiento" | "numero" | "monto_original" | "alumno_id" | "anio_escolar_id";
+                direction?: "asc" | "desc";
+                buscar?: string;
+                activo?: boolean;
+                alumno_id?: number;
+                matricula_id?: number;
+                anio_escolar_id?: number;
+                concepto?: "matricula" | "pension";
+                estado?: "pendiente" | "parcial" | "pagada" | "vencida" | "anulada";
+                vencimiento_desde?: string;
+                vencimiento_hasta?: string;
+                orden?: "asc" | "desc";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            cuotas: components["schemas"]["Cuota"][];
+                            paginacion: {
+                                pagina: number;
+                                por_pagina: number;
+                                total: number;
+                                ultima_pagina: number;
+                                siguiente: string | null;
+                                anterior: string | null;
+                            };
+                        };
+                        errors: null;
+                        code: string;
                     };
                 };
             };
@@ -2983,6 +3808,259 @@ export interface operations {
             404: components["responses"]["ModelNotFoundException"];
         };
     };
+    "descuento.storeMatricula": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The matricula ID */
+                matricula: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GuardarDescuentoRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            descuentos: components["schemas"]["Descuento"][];
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "descuento.storeCuota": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The cuota ID */
+                cuota: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GuardarDescuentoRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            descuento: components["schemas"]["Descuento"];
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "descuento.anular": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The descuento ID */
+                descuento: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AnularDescuentoRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            descuento: components["schemas"]["Descuento"];
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "deuda.porAula": {
+        parameters: {
+            query?: {
+                page?: number;
+                per_page?: number;
+                formato?: "json" | "pdf" | "xlsx";
+                nivel_id?: number;
+                grado_id?: number;
+                seccion_id?: number;
+                anio_escolar_id?: number;
+                dias_atraso_min?: number;
+                monto_min?: number;
+                buscar?: string;
+                orden?: "nombre" | "total_vencido" | "total_pendiente" | "dias_atraso" | "cuotas_vencidas";
+                direccion?: "asc" | "desc";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Reporte de deuda por aula en XLSX. */
+            200: {
+                headers: {
+                    /** @example attachment; filename=.xlsx */
+                    "Content-Disposition"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/octet-stream": string;
+                    "application/json": {
+                        message: string;
+                        data: {
+                            secciones: {
+                                seccion_id: number;
+                                nivel: string | null;
+                                grado: string | null;
+                                seccion: string | null;
+                                cantidad_alumnos: number;
+                                total_vencido: string;
+                                total_pendiente: string;
+                                alumnos: {
+                                    alumno_id: number;
+                                    nombre: string;
+                                    apellido: string;
+                                    nivel: string | null;
+                                    grado: string | null;
+                                    seccion: string | null;
+                                    total_vencido: string;
+                                    total_pendiente: string;
+                                    cuotas_vencidas: number;
+                                    dias_atraso: number;
+                                    apoderado_responsable_pago: {
+                                        nombre: string;
+                                        apellido: string;
+                                        telefono: string | null;
+                                        email: string | null;
+                                    } | null;
+                                }[];
+                            }[];
+                            filtros: {
+                                [key: string]: unknown;
+                            };
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                    "application/pdf": string;
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": string;
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "deuda.index": {
+        parameters: {
+            query?: {
+                page?: number;
+                per_page?: number;
+                formato?: "json" | "pdf" | "xlsx";
+                nivel_id?: number;
+                grado_id?: number;
+                seccion_id?: number;
+                anio_escolar_id?: number;
+                dias_atraso_min?: number;
+                monto_min?: number;
+                buscar?: string;
+                orden?: "nombre" | "total_vencido" | "total_pendiente" | "dias_atraso" | "cuotas_vencidas";
+                direccion?: "asc" | "desc";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            deudas: {
+                                alumno_id: number;
+                                nombre: string;
+                                apellido: string;
+                                nivel: string | null;
+                                grado: string | null;
+                                seccion: string | null;
+                                total_vencido: string;
+                                total_pendiente: string;
+                                cuotas_vencidas: number;
+                                dias_atraso: number;
+                                apoderado_responsable_pago: {
+                                    nombre: string;
+                                    apellido: string;
+                                    telefono: string | null;
+                                    email: string | null;
+                                } | null;
+                            }[];
+                            paginacion: {
+                                pagina: number;
+                                por_pagina: number;
+                                total: number;
+                                ultima_pagina: number;
+                            };
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
     "documentoRequerido.index": {
         parameters: {
             query?: never;
@@ -3087,6 +4165,77 @@ export interface operations {
             422: components["responses"]["ValidationException"];
         };
     };
+    "estadoCuenta.show": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The alumno ID */
+                alumno: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            alumno: {
+                                id: number;
+                                nombre: string;
+                                apellido: string;
+                            };
+                            cuotas: Record<string, never>[];
+                            pagos: Record<string, never>[];
+                            totales: {
+                                emitido: string;
+                                pagado: string;
+                                saldo: string;
+                                vencido: string;
+                            };
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "estadoCuenta.pdf": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The alumno ID */
+                alumno: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Estado de cuenta del alumno en formato PDF. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                    "application/pdf": string;
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
     "funcionColegio.show": {
         parameters: {
             query?: never;
@@ -3149,6 +4298,85 @@ export interface operations {
             };
             401: components["responses"]["AuthenticationException"];
             403: components["responses"]["AuthorizationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "gestionCobranza.index": {
+        parameters: {
+            query?: {
+                page?: number;
+                per_page?: number;
+            };
+            header?: never;
+            path: {
+                /** @description The alumno ID */
+                alumno: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            gestiones: components["schemas"]["GestionCobranza"][];
+                            paginacion: {
+                                pagina: number;
+                                por_pagina: number;
+                                total: number;
+                                ultima_pagina: number;
+                            };
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "gestionCobranza.store": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The alumno ID */
+                alumno: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GuardarGestionCobranzaRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            gestion: components["schemas"]["GestionCobranza"];
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
             422: components["responses"]["ValidationException"];
         };
     };
@@ -3996,6 +5224,215 @@ export interface operations {
             404: components["responses"]["ModelNotFoundException"];
         };
     };
+    "pago.index": {
+        parameters: {
+            query?: {
+                page?: number;
+                per_page?: number;
+                alumno_id?: number;
+                matricula_id?: number;
+                desde?: string;
+                hasta?: string;
+                medio?: "efectivo" | "deposito" | "transferencia" | "billetera_digital";
+                usuario_id?: number;
+                estado?: "vigente" | "anulado";
+                sort?: "id" | "fecha_pago" | "monto" | "medio" | "estado";
+                direction?: "asc" | "desc";
+                orden?: "asc" | "desc";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            pagos: components["schemas"]["Pago"][];
+                            paginacion: {
+                                pagina: number;
+                                por_pagina: number;
+                                total: number;
+                                ultima_pagina: number;
+                                siguiente: string | null;
+                                anterior: string | null;
+                            };
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "v1.pagos.store": {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Identificador único de la solicitud, válido durante 24 horas. */
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RegistrarPagoRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            pago: components["schemas"]["Pago"];
+                            saldos: {
+                                cuota_id: number;
+                                saldo: string;
+                                estado: string;
+                            }[];
+                            constancia: {
+                                numero: string;
+                                url: string;
+                            };
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: null;
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "v1.pagos.constancia": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The pago ID */
+                pago: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Constancia de pago en formato PDF. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                    "application/pdf": string;
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "pago.anular": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The pago ID */
+                pago: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AnularPagoRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            pago: components["schemas"]["Pago"];
+                            saldos: {
+                                cuota_id: number;
+                                saldo: string;
+                                estado: string;
+                            }[];
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "pago.show": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The pago ID */
+                pago: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            pago: components["schemas"]["Pago"];
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
     "periodos.index": {
         parameters: {
             query?: {
@@ -4229,6 +5666,257 @@ export interface operations {
             };
         };
     };
+    "reporte.matriculas": {
+        parameters: {
+            query?: {
+                formato?: "json" | "pdf" | "xlsx";
+                desde?: string;
+                hasta?: string;
+                medio?: "efectivo" | "deposito" | "transferencia" | "billetera_digital";
+                usuario_id?: number;
+                anio_escolar_id?: number;
+                nivel_id?: number;
+                grado_id?: number;
+                seccion_id?: number;
+                estado?: "pre_inscrito" | "pendiente_documentos" | "matriculado" | "retirado";
+                buscar?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Reporte de matrículas en XLSX. */
+            200: {
+                headers: {
+                    /** @example attachment; filename=.xlsx */
+                    "Content-Disposition"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/octet-stream": string;
+                    "application/json": {
+                        message: string;
+                        data: {
+                            resumen: {
+                                total_matriculas: number;
+                                pendientes_completar: number;
+                            };
+                            filas: {
+                                matricula_id: number;
+                                alumno_id: number;
+                                nombre: string;
+                                apellido: string;
+                                anio_escolar: string | null;
+                                nivel: string | null;
+                                grado: string | null;
+                                seccion: string | null;
+                                estado: string;
+                                documentos_pendientes: number;
+                            }[];
+                            filtros: {
+                                [key: string]: unknown;
+                            };
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                    "application/pdf": string;
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": string;
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "reporte.pagos": {
+        parameters: {
+            query?: {
+                formato?: "json" | "pdf" | "xlsx";
+                desde?: string;
+                hasta?: string;
+                medio?: "efectivo" | "deposito" | "transferencia" | "billetera_digital";
+                usuario_id?: number;
+                anio_escolar_id?: number;
+                nivel_id?: number;
+                grado_id?: number;
+                seccion_id?: number;
+                estado?: "pre_inscrito" | "pendiente_documentos" | "matriculado" | "retirado";
+                buscar?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Reporte de pagos en XLSX. */
+            200: {
+                headers: {
+                    /** @example attachment; filename=.xlsx */
+                    "Content-Disposition"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/octet-stream": string;
+                    "application/json": {
+                        message: string;
+                        data: {
+                            resumen: {
+                                cantidad: number;
+                                total_vigente: string;
+                            };
+                            filas: {
+                                pago_id: number;
+                                fecha_pago: string;
+                                alumno: string;
+                                usuario: string;
+                                medio: string;
+                                monto: string;
+                                estado: string;
+                                constancia: string | null;
+                            }[];
+                            filtros: {
+                                [key: string]: unknown;
+                            };
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                    "application/pdf": string;
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": string;
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "reporte.ingresosMensuales": {
+        parameters: {
+            query?: {
+                formato?: "json" | "pdf" | "xlsx";
+                desde?: string;
+                hasta?: string;
+                medio?: "efectivo" | "deposito" | "transferencia" | "billetera_digital";
+                usuario_id?: number;
+                anio_escolar_id?: number;
+                nivel_id?: number;
+                grado_id?: number;
+                seccion_id?: number;
+                estado?: "pre_inscrito" | "pendiente_documentos" | "matriculado" | "retirado";
+                buscar?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Reporte de ingresos mensuales en XLSX. */
+            200: {
+                headers: {
+                    /** @example attachment; filename=.xlsx */
+                    "Content-Disposition"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/octet-stream": string;
+                    "application/json": {
+                        message: string;
+                        data: {
+                            resumen: {
+                                total_emitido: string;
+                                total_cobrado: string;
+                            };
+                            filas: {
+                                mes: string;
+                                cuotas_emitidas: string;
+                                cuotas_cobradas: string;
+                            }[];
+                            filtros: {
+                                [key: string]: unknown;
+                            };
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                    "application/pdf": string;
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": string;
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "reporte.dashboard": {
+        parameters: {
+            query?: {
+                formato?: "json" | "pdf" | "xlsx";
+                desde?: string;
+                hasta?: string;
+                medio?: "efectivo" | "deposito" | "transferencia" | "billetera_digital";
+                usuario_id?: number;
+                anio_escolar_id?: number;
+                nivel_id?: number;
+                grado_id?: number;
+                seccion_id?: number;
+                estado?: "pre_inscrito" | "pendiente_documentos" | "matriculado" | "retirado";
+                buscar?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Dashboard financiero en XLSX. */
+            200: {
+                headers: {
+                    /** @example attachment; filename=.xlsx */
+                    "Content-Disposition"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/octet-stream": string;
+                    "application/json": {
+                        message: string;
+                        data: {
+                            resumen: {
+                                matriculados_por_nivel: {
+                                    nivel_id: number;
+                                    nivel: string;
+                                    matriculados: number;
+                                }[];
+                                recaudacion_mes: string;
+                                deuda_total: string;
+                                deuda_vencida: string;
+                                porcentaje_morosidad: string;
+                            };
+                            filas: {
+                                nivel_id: number;
+                                nivel: string;
+                                matriculados: number;
+                            }[];
+                            filtros: {
+                                mes: string;
+                            };
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                    "application/pdf": string;
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": string;
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
     "rol.index": {
         parameters: {
             query?: never;
@@ -4455,6 +6143,184 @@ export interface operations {
                         errors: null;
                         /** @constant */
                         code: "OK";
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "tarifas.index": {
+        parameters: {
+            query?: {
+                page?: number;
+                per_page?: number;
+                sort?: "id" | "anio_escolar_id" | "grado_id" | "monto_matricula" | "monto_pension" | "numero_cuotas" | "dia_vencimiento" | "mes_primera_pension";
+                direction?: "asc" | "desc";
+                buscar?: string;
+                activo?: boolean;
+                anio_escolar_id?: number;
+                grado_id?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            tarifas: components["schemas"]["Tarifa"][];
+                            paginacion: {
+                                pagina: number;
+                                por_pagina: number;
+                                total: number;
+                                ultima_pagina: number;
+                                siguiente: string | null;
+                                anterior: string | null;
+                            };
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "tarifas.store": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GuardarTarifaRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            tarifa: components["schemas"]["Tarifa"];
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "tarifas.show": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The tarifa ID */
+                tarifa: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            tarifa: components["schemas"]["Tarifa"];
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "tarifas.update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The tarifa ID */
+                tarifa: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GuardarTarifaRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            tarifa: components["schemas"]["Tarifa"];
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "tarifas.destroy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The tarifa ID */
+                tarifa: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: null;
+                        errors: null;
+                        code: string;
                     };
                 };
             };
@@ -4864,6 +6730,70 @@ export interface operations {
             };
             401: components["responses"]["AuthenticationException"];
             403: components["responses"]["AuthorizationException"];
+        };
+    };
+    "v1.pagos.voucher": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The pago ID */
+                pago: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Voucher almacenado de forma privada. */
+            200: {
+                headers: {
+                    "Transfer-Encoding": "chunked";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/octet-stream": string;
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+        };
+    };
+    "v1.pagos.voucher.store": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The pago ID */
+                pago: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["AdjuntarVoucherPagoRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        data: {
+                            pago: components["schemas"]["Pago"];
+                        };
+                        errors: null;
+                        code: string;
+                    };
+                };
+            };
+            401: components["responses"]["AuthenticationException"];
+            403: components["responses"]["AuthorizationException"];
+            404: components["responses"]["ModelNotFoundException"];
+            422: components["responses"]["ValidationException"];
         };
     };
 }

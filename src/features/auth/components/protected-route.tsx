@@ -68,9 +68,14 @@ export function ProtectedRoute({
   }
 
   if (permission || roles) {
-    const allowed =
-      (permission !== undefined && hasPermission(user, permission)) ||
-      (roles !== undefined && hasAnyRole(user, roles))
+    const hasPermissionData =
+      ('permisos' in user && Array.isArray(user.permisos)) ||
+      ('permissions' in user && Array.isArray(user.permissions))
+    const allowed = permission
+      ? hasPermissionData
+        ? hasPermission(user, permission)
+        : roles !== undefined && hasAnyRole(user, roles)
+      : roles !== undefined && hasAnyRole(user, roles)
     if (!allowed) return <Navigate to="/403" replace />
   }
 

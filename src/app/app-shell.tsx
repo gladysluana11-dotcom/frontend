@@ -15,6 +15,7 @@ import type { SchoolIdentity } from '../features/identity/api/identity-api'
 import { extractRoles, primaryRoleLabel } from '../features/auth/utils/roles'
 import { visibleNavigation, type NavigationItem } from './navigation'
 import { queryClient } from './query-client'
+import { usePermisos } from '../shared/hooks/use-permisos'
 
 function userRole(user: SessionUser): string {
   return primaryRoleLabel(user, texts.auth.userFallback)
@@ -22,6 +23,7 @@ function userRole(user: SessionUser): string {
 
 export default function AppShell() {
   const { data: user } = useSession()
+  const { permisos, hayPermisos } = usePermisos()
   const { data: identity } = useIdentity()
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
@@ -49,7 +51,10 @@ export default function AppShell() {
 
   if (!user) return <StatusState state="loading" />
 
-  const navigation = visibleNavigation(extractRoles(user))
+  const navigation = visibleNavigation(
+    extractRoles(user),
+    hayPermisos ? permisos : undefined,
+  )
 
   return (
     <div className="min-h-screen md:flex">

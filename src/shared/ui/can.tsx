@@ -12,7 +12,7 @@ type CanProps = {
 }
 
 /**
- * Muestra el contenido si el usuario cumple el permiso o tiene alguno de los roles indicados.
+ * Prioriza permisos presentes en sesión y usa roles solo mientras la API no entregue permisos.
  * Es solo una ayuda visual: la autorización real la aplica el backend.
  */
 export function Can({
@@ -36,5 +36,12 @@ export function Can({
   const byRole =
     requiredRoles.length > 0 && permissions.tieneAlgunRol(requiredRoles)
 
-  return byPermission || byRole ? children : fallback
+  const allowed =
+    requiredPermissions.length > 0
+      ? permissions.hayPermisos
+        ? byPermission
+        : byRole
+      : byRole
+
+  return allowed ? children : fallback
 }

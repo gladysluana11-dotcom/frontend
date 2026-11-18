@@ -1,5 +1,17 @@
-import { BookOpen, Users, type LucideIcon } from 'lucide-react'
+import {
+  Banknote,
+  BookOpen,
+  CreditCard,
+  FileBarChart,
+  TriangleAlert,
+  Tags,
+  Users,
+  type LucideIcon,
+} from 'lucide-react'
 import { normalizeRole } from '../features/auth/utils/roles'
+import { CASH_CLOSE_ROLES, TARIFF_VIEW_ROLES } from '../features/fees/roles'
+import { PAYMENT_VIEW_ROLES } from '../features/payments/roles'
+import { DEBT_VIEW_ROLES, REPORT_VIEW_ROLES } from '../features/debts/roles'
 import { STUDENT_VIEW_ROLES } from '../features/students/roles'
 import { texts } from '../shared/texts'
 
@@ -10,6 +22,7 @@ export type NavigationItem = {
   icon: LucideIcon
   /** Si se omite, lo ve cualquier usuario con sesión. */
   roles?: string[]
+  permission?: string
   end?: boolean
 }
 
@@ -29,13 +42,60 @@ export const navigationItems: NavigationItem[] = [
     icon: Users,
     roles: STUDENT_VIEW_ROLES,
   },
+  {
+    id: 'payments',
+    to: '/pagos',
+    label: texts.navigation.payments,
+    icon: CreditCard,
+    permission: 'pagos.ver',
+    roles: PAYMENT_VIEW_ROLES,
+  },
+  {
+    id: 'debts',
+    to: '/deudas',
+    label: texts.navigation.debts,
+    icon: TriangleAlert,
+    permission: 'deudas.ver',
+    roles: DEBT_VIEW_ROLES,
+  },
+  {
+    id: 'reports',
+    to: '/reportes',
+    label: texts.navigation.reports,
+    icon: FileBarChart,
+    permission: 'reportes.ver',
+    roles: REPORT_VIEW_ROLES,
+  },
+  {
+    id: 'tariffs',
+    to: '/configuracion/tarifas',
+    label: texts.navigation.tariffs,
+    icon: Tags,
+    permission: 'tarifas.ver',
+    roles: TARIFF_VIEW_ROLES,
+  },
+  {
+    id: 'cashbox',
+    to: '/caja',
+    label: texts.navigation.cashbox,
+    icon: Banknote,
+    permission: 'caja.cerrar',
+    roles: CASH_CLOSE_ROLES,
+  },
 ]
 
-/** Opciones del menú que puede ver un usuario según sus roles ya normalizados. */
-export function visibleNavigation(userRoles: string[]): NavigationItem[] {
-  return navigationItems.filter(
-    (item) =>
+/** Filtra el menú por permisos presentes en sesión o, si no existen, por roles. */
+export function visibleNavigation(
+  userRoles: string[],
+  permissions?: string[],
+): NavigationItem[] {
+  return navigationItems.filter((item) => {
+    if (item.permission && permissions !== undefined) {
+      return permissions.includes(item.permission)
+    }
+    return (
       !item.roles ||
-      item.roles.some((role) => userRoles.includes(normalizeRole(role))),
-  )
+      item.roles.some((role) => userRoles.includes(normalizeRole(role)))
+    )
+  })
 }
