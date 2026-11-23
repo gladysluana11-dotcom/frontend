@@ -2,25 +2,31 @@ import { describe, expect, it } from 'vitest'
 import { resolveSchoolSubdomain } from './subdomain'
 
 describe('resolución del subdominio', () => {
-  it('usa la configuración local durante el desarrollo', () => {
+  it('prioriza el subdominio configurado durante el desarrollo', () => {
     expect(
-      resolveSchoolSubdomain('localhost', 'development', ' salesianinnova '),
+      resolveSchoolSubdomain('localhost', ' salesianinnova '),
     ).toBe('salesianinnova')
   })
 
-  it('toma la primera etiqueta del hostname en producción', () => {
+  it('prioriza el subdominio configurado también en producción', () => {
     expect(
       resolveSchoolSubdomain(
         'salesianinnova.sge.example.pe',
-        'production',
-        'ignorado',
+        'salesian-innova',
+      ),
+    ).toBe('salesian-innova')
+  })
+
+  it('usa la primera etiqueta del hostname cuando no hay configuración', () => {
+    expect(
+      resolveSchoolSubdomain(
+        'salesianinnova.sge.example.pe',
+        undefined,
       ),
     ).toBe('salesianinnova')
   })
 
   it('no trata localhost como un subdominio de colegio en producción', () => {
-    expect(resolveSchoolSubdomain('localhost', 'production', undefined)).toBe(
-      '',
-    )
+    expect(resolveSchoolSubdomain('localhost', undefined)).toBe('')
   })
 })

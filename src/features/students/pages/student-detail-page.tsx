@@ -27,6 +27,11 @@ import {
   PAYMENT_REGISTER_ROLES,
   PAYMENT_VIEW_ROLES,
 } from '../../payments/roles'
+import {
+  ENROLLMENT_MANAGE_ROLES,
+  ENROLLMENT_VIEW_ROLES,
+} from '../../enrollments/roles'
+import { useStudentGuardians } from '../../enrollments/hooks/use-enrollments'
 
 function sexLabel(value: string | null | undefined): string {
   if (value === 'M') return texts.students.male
@@ -59,6 +64,10 @@ export default function StudentDetailPage() {
 
   const student = useStudent(studentId)
   const history = useStudentHistory(studentId)
+  const guardiansQuery = useStudentGuardians(
+    studentId,
+    student.data !== undefined && student.data.apoderados === undefined,
+  )
   const { tieneAlgunRol } = usePermisos()
   const [changingStatus, setChangingStatus] = useState(false)
 
@@ -147,6 +156,22 @@ export default function StudentDetailPage() {
             {texts.studentsForm.statusTitle}
           </Button>
         </Can>
+        <Can rol={ENROLLMENT_MANAGE_ROLES}>
+          <Button asChild size="sm">
+            <Link to={`/matriculas/nueva?alumno_id=${data.id}`}>
+              {texts.enrollments.newButton}
+            </Link>
+          </Button>
+        </Can>
+        {data.matricula_actual?.id ? (
+          <Can rol={ENROLLMENT_VIEW_ROLES}>
+            <Button asChild size="sm" variant="outline">
+              <Link to={`/matriculas/${data.matricula_actual.id}`}>
+                {texts.enrollments.currentEnrollment}
+              </Link>
+            </Button>
+          </Can>
+        ) : null}
         <Can permiso="pagos.ver" rol={PAYMENT_VIEW_ROLES}>
           <Button asChild variant="outline" size="sm">
             <Link to={`/alumnos/${data.id}/estado-cuenta`}>
@@ -225,8 +250,20 @@ export default function StudentDetailPage() {
 
       <GuardiansCard
         studentId={data.id}
-        guardians={data.apoderados}
+        guardians={
+          data.apoderados?.map((guardian) => ({
+            ...guardian,
+            email: guardian.email ?? guardian.correo,
+          })) ?? guardiansQuery.data
+        }
         canEdit={tieneAlgunRol(STUDENT_WRITE_ROLES)}
+        isLoading={guardiansQuery.isPending && data.apoderados === undefined}
+        loadError={
+          data.apoderados === undefined && guardiansQuery.isError
+            ? guardiansQuery.error.message
+            : undefined
+        }
+        onRetry={() => void guardiansQuery.refetch()}
       />
 
       <Card className="mt-6">

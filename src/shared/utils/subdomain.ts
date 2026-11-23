@@ -2,10 +2,10 @@ const reservedHostLabels = new Set(['www', 'api', 'localhost'])
 
 export function resolveSchoolSubdomain(
   hostname: string,
-  mode: string,
   developmentSubdomain: string | undefined,
 ): string {
-  if (mode === 'development') return developmentSubdomain?.trim() ?? ''
+  const configuredSubdomain = developmentSubdomain?.trim()
+  if (configuredSubdomain) return configuredSubdomain
 
   const normalizedHost = hostname.toLowerCase().replace(/\.$/, '')
   if (
@@ -19,19 +19,19 @@ export function resolveSchoolSubdomain(
 }
 
 /**
- * Subdominio que se envía en el login. El backend lo exige solo en desarrollo local;
- * en los subdominios reales valida contra el origen de la SPA.
+ * Subdominio que se envía en el login, según la configuración o el hostname actual.
  */
 export function getLoginSubdomain(): string | undefined {
-  if (import.meta.env.MODE !== 'development') return undefined
-  const subdomain = import.meta.env.VITE_SUBDOMINIO_DEV?.trim()
+  const subdomain = resolveSchoolSubdomain(
+    window.location.hostname,
+    import.meta.env.VITE_SUBDOMINIO_DEV,
+  )
   return subdomain ? subdomain : undefined
 }
 
 export function getCurrentSchoolSubdomain(): string {
   return resolveSchoolSubdomain(
     window.location.hostname,
-    import.meta.env.MODE,
     import.meta.env.VITE_SUBDOMINIO_DEV,
   )
 }

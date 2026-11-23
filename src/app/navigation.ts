@@ -1,8 +1,10 @@
 import {
   Banknote,
   BookOpen,
+  ClipboardList,
   CreditCard,
   FileBarChart,
+  FileText,
   TriangleAlert,
   Tags,
   Users,
@@ -13,6 +15,10 @@ import { CASH_CLOSE_ROLES, TARIFF_VIEW_ROLES } from '../features/fees/roles'
 import { PAYMENT_VIEW_ROLES } from '../features/payments/roles'
 import { DEBT_VIEW_ROLES, REPORT_VIEW_ROLES } from '../features/debts/roles'
 import { STUDENT_VIEW_ROLES } from '../features/students/roles'
+import {
+  ENROLLMENT_MANAGE_ROLES,
+  ENROLLMENT_VIEW_ROLES,
+} from '../features/enrollments/roles'
 import { texts } from '../shared/texts'
 
 export type NavigationItem = {
@@ -41,6 +47,20 @@ export const navigationItems: NavigationItem[] = [
     label: texts.navigation.students,
     icon: Users,
     roles: STUDENT_VIEW_ROLES,
+  },
+  {
+    id: 'enrollments',
+    to: '/matriculas',
+    label: texts.navigation.enrollments,
+    icon: ClipboardList,
+    roles: ENROLLMENT_VIEW_ROLES,
+  },
+  {
+    id: 'required-documents',
+    to: '/configuracion/documentos',
+    label: texts.navigation.requiredDocuments,
+    icon: FileText,
+    roles: ENROLLMENT_MANAGE_ROLES,
   },
   {
     id: 'payments',

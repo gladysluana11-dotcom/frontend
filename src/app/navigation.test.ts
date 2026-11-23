@@ -10,6 +10,8 @@ describe('visibleNavigation', () => {
       expect(ids([role])).toEqual([
         'dashboard',
         'students',
+        'enrollments',
+        ...(role === 'tesoreria' ? [] : ['required-documents']),
         'payments',
         'debts',
         'reports',
@@ -20,11 +22,13 @@ describe('visibleNavigation', () => {
     expect(ids(['coordinacion'])).toEqual([
       'dashboard',
       'students',
+      'enrollments',
+      'required-documents',
       'debts',
       'reports',
     ])
     for (const role of ['docente', 'auxiliar']) {
-      expect(ids([role])).toEqual(['dashboard', 'students'])
+      expect(ids([role])).toEqual(['dashboard', 'students', 'enrollments'])
     }
   })
 
@@ -38,6 +42,8 @@ describe('visibleNavigation', () => {
     expect(ids(['director'])).toEqual([
       'dashboard',
       'students',
+      'enrollments',
+      'required-documents',
       'payments',
       'debts',
       'reports',
@@ -47,6 +53,7 @@ describe('visibleNavigation', () => {
     expect(ids(['tesoreria'])).toEqual([
       'dashboard',
       'students',
+      'enrollments',
       'payments',
       'debts',
       'reports',
@@ -56,25 +63,35 @@ describe('visibleNavigation', () => {
     expect(ids(['coordinacion'])).toEqual([
       'dashboard',
       'students',
+      'enrollments',
+      'required-documents',
       'debts',
       'reports',
     ])
-    expect(ids(['docente'])).toEqual(['dashboard', 'students'])
-    expect(ids(['auxiliar'])).toEqual(['dashboard', 'students'])
+    expect(ids(['docente'])).toEqual(['dashboard', 'students', 'enrollments'])
+    expect(ids(['auxiliar'])).toEqual(['dashboard', 'students', 'enrollments'])
     expect(ids(['apoderado'])).toEqual(['dashboard'])
   })
 
   it('prioriza los permisos recibidos en la sesión', () => {
-    expect(ids(['director'], [])).toEqual(['dashboard', 'students'])
+    expect(ids(['director'], [])).toEqual([
+      'dashboard',
+      'students',
+      'enrollments',
+      'required-documents',
+    ])
     expect(ids(['apoderado'], ['pagos.ver'])).toEqual(['dashboard', 'payments'])
     expect(ids(['director'], ['tarifas.ver'])).toEqual([
       'dashboard',
       'students',
+      'enrollments',
+      'required-documents',
       'tariffs',
     ])
     expect(ids(['docente'], ['deudas.ver', 'reportes.ver'])).toEqual([
       'dashboard',
       'students',
+      'enrollments',
       'debts',
       'reports',
     ])

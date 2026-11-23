@@ -14,7 +14,7 @@ type LoginRequest = {
 
 type LoginBody = LoginRequest & { subdominio?: string }
 
-/** Arma el cuerpo del login; agrega el subdominio solo cuando corresponde (desarrollo). */
+/** Arma el cuerpo del login y agrega el subdominio cuando está disponible. */
 export function buildLoginBody(
   credentials: LoginRequest,
   subdomain: string | undefined,

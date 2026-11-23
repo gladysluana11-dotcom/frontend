@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { normalizeMoney } from '../payments/money'
+import { emptyArrayAsObject, looseRecord } from '../../shared/api/collections'
 
 const moneySchema = z
   .union([z.number(), z.string()])
@@ -24,8 +25,7 @@ export const enrollmentReportSchema = z.object({
     pendientes_completar: z.number().int(),
   }),
   filas: z.array(reportEnrollmentRowSchema),
-  filtros: z.record(z.string(), z.unknown()).optional(),
-})
+filtros: looseRecord.optional(),})
 
 export const reportPaymentRowSchema = z.object({
   pago_id: z.number(),
@@ -44,8 +44,7 @@ export const paymentReportSchema = z.object({
     total_vigente: moneySchema,
   }),
   filas: z.array(reportPaymentRowSchema),
-  filtros: z.record(z.string(), z.unknown()).optional(),
-})
+filtros: looseRecord.optional(),})
 
 export const monthlyIncomeRowSchema = z.object({
   mes: z.string(),
@@ -59,7 +58,7 @@ export const monthlyIncomeReportSchema = z.object({
     total_cobrado: moneySchema,
   }),
   filas: z.array(monthlyIncomeRowSchema),
-  filtros: z.record(z.string(), z.unknown()).optional(),
+  filtros: looseRecord.optional(),
 })
 
 export const dashboardSchema = z.object({
@@ -83,8 +82,7 @@ export const dashboardSchema = z.object({
       matriculados: z.number().int(),
     }),
   ),
-  filtros: z.object({ mes: z.string() }),
-})
+filtros: z.preprocess(emptyArrayAsObject, z.object({ mes: z.string().optional() })),})
 
 export type EnrollmentReport = z.infer<typeof enrollmentReportSchema>
 export type EnrollmentReportRow = z.infer<typeof reportEnrollmentRowSchema>

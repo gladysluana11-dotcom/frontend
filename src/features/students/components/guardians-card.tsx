@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '../../../shared/ui/card'
+import { StatusState } from '../../../shared/ui/status-state'
 import type { Guardian } from '../schemas'
 import { LinkGuardianForm, NewGuardianForm } from './guardian-forms'
 
@@ -15,6 +16,9 @@ type GuardiansCardProps = {
   studentId: number
   guardians: Guardian[] | undefined
   canEdit: boolean
+  isLoading?: boolean
+  loadError?: string | undefined
+  onRetry?: (() => void) | undefined
 }
 
 type Mode = 'new' | 'link' | null
@@ -23,6 +27,9 @@ export function GuardiansCard({
   studentId,
   guardians,
   canEdit,
+  isLoading = false,
+  loadError,
+  onRetry,
 }: GuardiansCardProps) {
   const t = texts.studentsForm
   const [mode, setMode] = useState<Mode>(null)
@@ -34,7 +41,15 @@ export function GuardiansCard({
         <CardTitle className="text-base">{t.guardians}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {guardians === undefined ? (
+        {isLoading ? (
+          <StatusState state="loading" />
+        ) : loadError ? (
+          <StatusState
+            state="error"
+            message={loadError}
+            {...(onRetry ? { onRetry } : {})}
+          />
+        ) : guardians === undefined ? (
           <p className="text-sm text-muted-foreground">{t.guardiansPending}</p>
         ) : guardians.length === 0 ? (
           <p className="text-sm text-muted-foreground">
@@ -58,6 +73,11 @@ export function GuardiansCard({
                 {guardian.telefono ? (
                   <span className="text-muted-foreground">
                     {guardian.telefono}
+                  </span>
+                ) : null}
+                {(guardian.email ?? guardian.correo) ? (
+                  <span className="text-muted-foreground">
+                    {guardian.email ?? guardian.correo}
                   </span>
                 ) : null}
                 {guardian.responsable_pago ? (

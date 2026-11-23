@@ -17,6 +17,11 @@ vi.mock('../api/students-api', async (importOriginal) => ({
 
 const getStudent = vi.mocked(studentsApi.getStudent)
 const getStudentHistory = vi.mocked(studentsApi.getStudentHistory)
+const useStudentGuardians = vi.hoisted(() => vi.fn())
+
+vi.mock('../../enrollments/hooks/use-enrollments', () => ({
+  useStudentGuardians,
+}))
 
 const student = {
   id: 18,
@@ -29,6 +34,16 @@ const student = {
   direccion: 'Dirección ficticia 18',
   foto_url: null,
   estado: 'activo',
+  matricula_actual: {
+    id: 31,
+    anio_escolar_id: 1,
+    grado_id: 9,
+    seccion_id: 18,
+    anio_escolar: '2026',
+    grado: '6.°',
+    seccion: 'B',
+    estado: 'matriculado',
+  },
 }
 
 const history = {
@@ -84,6 +99,22 @@ beforeEach(() => {
   vi.resetAllMocks()
   getStudent.mockResolvedValue(student)
   getStudentHistory.mockResolvedValue(history)
+  useStudentGuardians.mockReturnValue({
+    data: [
+      {
+        id: 7,
+        nombre: 'Rosa',
+        apellido: 'Vega',
+        parentesco: 'Madre',
+        telefono: '900000007',
+        email: 'rosa@example.test',
+        responsable_pago: true,
+      },
+    ],
+    isPending: false,
+    isError: false,
+    refetch: vi.fn(),
+  })
 })
 
 describe('StudentDetailPage', () => {
@@ -111,6 +142,20 @@ describe('StudentDetailPage', () => {
       await screen.findByText('Matrícula creada (Matriculado)'),
     ).toBeInTheDocument()
     expect(screen.getByText('Estado del alumno: Activo')).toBeInTheDocument()
+  })
+
+  it('muestra los apoderados relacionados y enlaza la matrícula actual', async () => {
+    renderPage('/alumnos/18', ['coordinacion'])
+
+    expect(await screen.findByText('Vega, Rosa')).toBeInTheDocument()
+    expect(screen.getByText('900000007')).toBeInTheDocument()
+    expect(screen.getByText('rosa@example.test')).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Ver matrícula actual' }),
+    ).toHaveAttribute('href', '/matriculas/31')
+    expect(
+      screen.getByRole('link', { name: 'Nueva matrícula' }),
+    ).toHaveAttribute('href', '/matriculas/nueva?alumno_id=18')
   })
 
   it('no pide la foto si el alumno no tiene', async () => {

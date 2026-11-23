@@ -23,3 +23,16 @@ export function formatDate(value: string | Date): string {
   if (Number.isNaN(date.getTime())) return 'Fecha no válida'
   return dateFormatter.format(date)
 }
+
+export function dateInputToday(): string {
+  const parts = new Intl.DateTimeFormat('en', {
+    timeZone: 'America/Lima',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(new Date())
+  const values = Object.fromEntries(
+    parts.map(({ type, value }) => [type, value]),
+  )
+  return `${values.year}-${values.month}-${values.day}`
+}

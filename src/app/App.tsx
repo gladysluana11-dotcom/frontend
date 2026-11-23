@@ -17,6 +17,10 @@ import {
   STUDENT_WRITE_ROLES,
 } from '../features/students/roles'
 import {
+  ENROLLMENT_MANAGE_ROLES,
+  ENROLLMENT_VIEW_ROLES,
+} from '../features/enrollments/roles'
+import {
   PAYMENT_REGISTER_ROLES,
   PAYMENT_VIEW_ROLES,
 } from '../features/payments/roles'
@@ -57,6 +61,18 @@ const StudentCreatePage = lazy(
 const StudentEditPage = lazy(
   () => import('../features/students/pages/student-edit-page'),
 )
+const EnrollmentsPage = lazy(
+  () => import('../features/enrollments/pages/enrollments-page'),
+)
+const EnrollmentCreatePage = lazy(
+  () => import('../features/enrollments/pages/enrollment-create-page'),
+)
+const EnrollmentRecordDetailPage = lazy(
+  () => import('../features/enrollments/pages/enrollment-detail-page'),
+)
+const RequiredDocumentsPage = lazy(
+  () => import('../features/enrollments/pages/required-documents-page'),
+)
 const PaymentsPage = lazy(
   () => import('../features/payments/pages/payments-page'),
 )
@@ -68,9 +84,6 @@ const PaymentDetailPage = lazy(
 )
 const StudentAccountPage = lazy(
   () => import('../features/payments/pages/student-account-page'),
-)
-const EnrollmentDetailPage = lazy(
-  () => import('../features/payments/pages/enrollment-detail-page'),
 )
 const TariffsPage = lazy(() => import('../features/fees/pages/tariffs-page'))
 const CashboxPage = lazy(() => import('../features/fees/pages/cashbox-page'))
@@ -203,9 +216,26 @@ function AppRoutes() {
                 <Route element={<ProtectedRoute roles={STUDENT_VIEW_ROLES} />}>
                   <Route path="/alumnos" element={<StudentsPage />} />
                   <Route path="/alumnos/:id" element={<StudentDetailPage />} />
+                </Route>
+                <Route
+                  element={<ProtectedRoute roles={ENROLLMENT_VIEW_ROLES} />}
+                >
+                  <Route path="/matriculas" element={<EnrollmentsPage />} />
                   <Route
                     path="/matriculas/:id"
-                    element={<EnrollmentDetailPage />}
+                    element={<EnrollmentRecordDetailPage />}
+                  />
+                </Route>
+                <Route
+                  element={<ProtectedRoute roles={ENROLLMENT_MANAGE_ROLES} />}
+                >
+                  <Route
+                    path="/matriculas/nueva"
+                    element={<EnrollmentCreatePage />}
+                  />
+                  <Route
+                    path="/configuracion/documentos"
+                    element={<RequiredDocumentsPage />}
                   />
                 </Route>
                 <Route

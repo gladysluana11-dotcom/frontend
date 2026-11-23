@@ -83,3 +83,10 @@ export function parseData<T>(body: unknown, schema: z.ZodType<T>): T {
   if (!data.success) throw unexpectedShape()
   return data.data
 }
+
+/** PHP envía [] en vez de {} cuando un mapa está vacío; esta función lo convierte en objeto vacío. */
+export function emptyArrayAsObject(value: unknown): unknown {
+  return Array.isArray(value) && value.length === 0 ? {} : value
+}
+
+export const looseRecord = z.preprocess(emptyArrayAsObject, z.record(z.string(), z.unknown()))

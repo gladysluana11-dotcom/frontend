@@ -3,6 +3,7 @@ import { z } from 'zod'
 const nullableText = z.string().nullable().optional()
 
 const enrollmentSummarySchema = z.object({
+  id: z.number().optional(),
   anio_escolar_id: z.number().nullable().optional(),
   grado_id: z.number().nullable().optional(),
   seccion_id: z.number().nullable().optional(),
@@ -28,6 +29,7 @@ const guardianSchema = z.object({
   parentesco: nullableText,
   telefono: nullableText,
   email: nullableText,
+  correo: nullableText,
   responsable_pago: z.boolean().nullable().optional(),
 })
 
@@ -42,8 +44,8 @@ export const studentDetailSchema = z.object({
   direccion: nullableText,
   foto_url: nullableText,
   estado: z.string(),
-  /** Aún no viene en la respuesta de la API; cuando se agregue, se muestra sin más cambios. */
   apoderados: z.array(guardianSchema).optional(),
+  matricula_actual: enrollmentSummarySchema.nullable().optional(),
 })
 
 const enrollmentHistorySchema = z.object({
