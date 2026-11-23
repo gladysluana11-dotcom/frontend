@@ -27,10 +27,10 @@ VITE_SUBDOMINIO_DEV=salesian-innova
 Para desarrollo local:
 
 1. Inicia el backend Laravel en `http://localhost:8000`.
-2. Configura Sanctum/CORS en el backend para aceptar el origen Vite (`http://localhost:5173`), cookies con credenciales y el dominio frontend como dominio stateful.
+2. Configura CORS en el backend para aceptar el origen Vite (`http://localhost:5173`) y la cabecera `Authorization`.
 3. En otra terminal, ejecuta `npm run dev`.
 
-La sesión usa cookies de Sanctum y solicita `/sanctum/csrf-cookie` antes de las operaciones mutables. No se almacenan tokens o datos de sesión en `localStorage` ni `sessionStorage`.
+El login usa `/api/v1/auth/token`; la SPA conserva el token personal de Sanctum en `localStorage` y lo envía como `Authorization: Bearer` en las peticiones autenticadas. El subdominio del colegio se mantiene en el cuerpo del login cuando corresponde.
 
 ## Comandos
 

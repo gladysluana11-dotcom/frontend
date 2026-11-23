@@ -47,12 +47,15 @@ async function loadApi(
   respond: (request: Request) => Response | Promise<Response>,
 ) {
   const requests: Request[] = []
-  const fetchMock = vi.fn(async (input: Request | string) => {
-    if (typeof input === 'string') return new Response(null, { status: 204 })
-    requests.push(input.clone())
-    return respond(input)
-  })
-  document.cookie = 'XSRF-TOKEN=token-de-prueba; path=/'
+  const fetchMock = vi.fn(
+    async (input: RequestInfo | URL, init?: RequestInit) => {
+      const request =
+        input instanceof Request ? input : new Request(input, init)
+      requests.push(request.clone())
+      return respond(request)
+    },
+  )
+  localStorage.setItem('sge_access_token', 'token-de-prueba')
   vi.stubGlobal('fetch', fetchMock)
   vi.resetModules()
   const api = await import('./enrollments-api')
@@ -68,8 +71,7 @@ function jsonResponse(body: unknown, status = 200) {
 
 describe('enrollments-api con respuestas reales', () => {
   afterEach(() => {
-    document.cookie =
-      'XSRF-TOKEN=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
+    localStorage.clear()
     vi.unstubAllGlobals()
     vi.restoreAllMocks()
     vi.resetModules()
@@ -131,7 +133,7 @@ describe('enrollments-api con respuestas reales', () => {
     )
   })
 
-  it('registra una matrícula con la cabecera CSRF y lee su recurso', async () => {
+  it('registra una matrícula con el token Bearer y lee su recurso', async () => {
     const { api, requests } = await loadApi(() =>
       jsonResponse({ data: { matricula: enrollment } }, 201),
     )
@@ -147,7 +149,7 @@ describe('enrollments-api con respuestas reales', () => {
 
     expect(created.id).toBe(18)
     expect(request?.method).toBe('POST')
-    expect(request?.headers.get('x-xsrf-token')).toBe('token-de-prueba')
+    expect(request?.headers.get('authorization')).toBe('Bearer token-de-prueba')
     expect(await request?.json()).toEqual({
       alumno_id: 18,
       anio_escolar_id: 1,
@@ -185,7 +187,7 @@ describe('enrollments-api con respuestas reales', () => {
     })
   })
 
-  it('cambia estado y sección usando los contratos y la protección CSRF', async () => {
+  it('cambia estado y sección usando los contratos y el token Bearer', async () => {
     const { api, requests } = await loadApi(() =>
       jsonResponse({ data: { matricula: enrollment } }),
     )
@@ -211,7 +213,9 @@ describe('enrollments-api con respuestas reales', () => {
       motivo: 'Traslado',
       fecha_retiro: '2026-03-02',
     })
-    expect(requests[1]?.headers.get('x-xsrf-token')).toBe('token-de-prueba')
+    expect(requests[1]?.headers.get('authorization')).toBe(
+      'Bearer token-de-prueba',
+    )
     expect(new URL(requests[1]?.url ?? '').pathname).toBe(
       '/api/v1/matriculas/18/cambiar-seccion',
     )

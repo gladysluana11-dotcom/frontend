@@ -11,13 +11,10 @@ async function loadApi(
       const request =
         input instanceof Request ? input : new Request(input, init)
       requests.push(request.clone())
-      if (request.url.includes('/sanctum/csrf-cookie')) {
-        return new Response(null, { status: 204 })
-      }
       return respond(request)
     }),
   )
-  document.cookie = 'XSRF-TOKEN=collection-csrf; path=/'
+  localStorage.setItem('sge_access_token', 'token-de-prueba')
   const api = await import('./debts-api')
   return { api, requests }
 }
@@ -47,7 +44,7 @@ afterEach(() => {
   vi.unstubAllGlobals()
   vi.restoreAllMocks()
   vi.useRealTimers()
-  document.cookie = 'XSRF-TOKEN=; Max-Age=0; path=/'
+  localStorage.clear()
 })
 
 describe('debts API', () => {
@@ -117,7 +114,7 @@ describe('debts API', () => {
     )
     expect(result.compromiso_monto).toBe(45.5)
     expect(request?.url).toContain('/v1/alumnos/7/gestiones-cobranza')
-    expect(request?.headers.get('x-xsrf-token')).toBe('collection-csrf')
+    expect(request?.headers.get('authorization')).toBe('Bearer token-de-prueba')
     expect(request?.headers.get('accept')).toBe('application/json')
     expect(await request?.clone().text()).toContain('"compromiso_monto":45.50')
   })

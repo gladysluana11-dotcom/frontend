@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { ApiError } from '../../../shared/api/errors'
+import { getAccessToken } from '../../../shared/api/client'
 import { getCurrentUser, type SessionUser } from '../api/auth-api'
 
 export const sessionQueryKey = ['auth', 'me'] as const
@@ -8,6 +9,7 @@ export function useSession() {
   return useQuery<SessionUser | null>({
     queryKey: sessionQueryKey,
     queryFn: async () => {
+      if (!getAccessToken()) return null
       try {
         return await getCurrentUser()
       } catch (error) {

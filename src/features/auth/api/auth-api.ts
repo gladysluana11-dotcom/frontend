@@ -1,5 +1,10 @@
 import type { paths } from '../../../api/schema'
-import { api, executeApi } from '../../../shared/api/client'
+import {
+  api,
+  clearAccessToken,
+  executeApi,
+  setAccessToken,
+} from '../../../shared/api/client'
 import { getLoginSubdomain } from '../../../shared/utils/subdomain'
 
 type UserResponse =
@@ -26,7 +31,9 @@ export function buildLoginBody(
 
 export async function login(credentials: LoginRequest): Promise<SessionUser> {
   const body = buildLoginBody(credentials, getLoginSubdomain())
-  const response = await executeApi(() => api.POST('/v1/auth/login', { body }))
+  clearAccessToken()
+  const response = await executeApi(() => api.POST('/v1/auth/token', { body }))
+  setAccessToken(response.data.token)
   return response.data.usuario
 }
 
@@ -36,7 +43,11 @@ export async function getCurrentUser(): Promise<SessionUser> {
 }
 
 export async function logout(): Promise<void> {
-  await executeApi(() => api.POST('/v1/auth/logout'))
+  try {
+    await executeApi(() => api.POST('/v1/auth/logout'))
+  } finally {
+    clearAccessToken()
+  }
 }
 
 export async function requestPasswordReset(email: string): Promise<void> {

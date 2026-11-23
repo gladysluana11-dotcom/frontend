@@ -104,20 +104,19 @@ const historyBody = {
 async function loadApi(body: unknown, status = 200) {
   const urls: string[] = []
   const requests: Request[] = []
-  const fetchMock = vi.fn(async (input: Request | string) => {
-    if (typeof input === 'string') {
-      // Cookie CSRF de Sanctum: responde 204 sin cuerpo.
-      return new Response(null, { status: 204 })
-    }
-    urls.push(input.url)
-    requests.push(input.clone())
-    return new Response(JSON.stringify(body), {
-      status,
-      headers: { 'Content-Type': 'application/json' },
-    })
-  })
-  // Sanctum entrega la cookie XSRF-TOKEN; el cliente la copia en la cabecera X-XSRF-TOKEN.
-  document.cookie = 'XSRF-TOKEN=token-de-prueba; path=/'
+  const fetchMock = vi.fn(
+    async (input: RequestInfo | URL, init?: RequestInit) => {
+      const request =
+        input instanceof Request ? input : new Request(input, init)
+      urls.push(request.url)
+      requests.push(request.clone())
+      return new Response(JSON.stringify(body), {
+        status,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    },
+  )
+  localStorage.setItem('sge_access_token', 'token-de-prueba')
   vi.stubGlobal('fetch', fetchMock)
   vi.resetModules()
   const api = await import('./students-api')
@@ -126,8 +125,7 @@ async function loadApi(body: unknown, status = 200) {
 
 describe('students-api con respuestas reales', () => {
   afterEach(() => {
-    document.cookie =
-      'XSRF-TOKEN=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
+    localStorage.clear()
     vi.unstubAllGlobals()
     vi.resetModules()
   })
@@ -243,8 +241,8 @@ describe('students-api con respuestas reales', () => {
         '/api/v1/alumnos',
       )
       expect(await requests.at(-1)?.json()).toEqual(form)
-      expect(requests.at(-1)?.headers.get('x-xsrf-token')).toBe(
-        'token-de-prueba',
+      expect(requests.at(-1)?.headers.get('authorization')).toBe(
+        'Bearer token-de-prueba',
       )
       expect(requests.at(-1)?.headers.get('accept')).toBe('application/json')
     })

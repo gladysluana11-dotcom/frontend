@@ -5,15 +5,13 @@ async function loadApi(
 ) {
   const requests: Request[] = []
   vi.resetModules()
+  localStorage.setItem('sge_access_token', 'token-de-prueba')
   vi.stubGlobal(
     'fetch',
     vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const request =
         input instanceof Request ? input : new Request(input, init)
       requests.push(request.clone())
-      if (request.url.includes('/sanctum/csrf-cookie')) {
-        return new Response(null, { status: 204 })
-      }
       return respond(request)
     }),
   )
@@ -29,6 +27,7 @@ function jsonResponse(body: unknown): Response {
 }
 
 afterEach(() => {
+  localStorage.clear()
   vi.unstubAllGlobals()
   vi.restoreAllMocks()
   vi.useRealTimers()

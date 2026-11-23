@@ -3017,7 +3017,16 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** Format: email */
+                    email: string;
+                    password: string;
+                    subdominio?: string;
+                };
+            };
+        };
         responses: {
             200: {
                 headers: {
@@ -3043,7 +3052,7 @@ export interface operations {
                                 };
                                 requiere_cambio_contrasena: boolean;
                             };
-                            token: null;
+                            token: string;
                         };
                         errors: null;
                         /** @constant */

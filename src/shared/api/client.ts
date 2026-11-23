@@ -3,64 +3,23 @@ import type { paths } from '../../api/schema'
 import { normalizeApiError } from './errors'
 import { texts } from '../texts'
 
-type LoginRequest = {
-  email: string
-  password: string
-  subdominio?: string
-}
-
-type LoginOperation = Omit<paths['/v1/auth/login']['post'], 'requestBody'> & {
-  requestBody: {
-    content: {
-      'application/json': LoginRequest
-    }
-  }
-}
-
-export type ApiPaths = Omit<paths, '/v1/auth/login'> & {
-  '/v1/auth/login': Omit<paths['/v1/auth/login'], 'post'> & {
-    post: LoginOperation
-  }
-}
-
 const apiRoot = (
   import.meta.env.VITE_API_URL || 'http://localhost:8000'
 ).replace(/\/+$/, '')
 
 export const apiBaseUrl = `${apiRoot}/api`
+export const accessTokenStorageKey = 'sge_access_token'
 
-let csrfRequest: Promise<void> | undefined
-
-function readCsrfToken(): string | undefined {
-  const cookie = document.cookie
-    .split('; ')
-    .find((entry) => entry.startsWith('XSRF-TOKEN='))
-  if (!cookie) return undefined
-
-  return decodeURIComponent(cookie.slice('XSRF-TOKEN='.length))
+export function getAccessToken(): string | null {
+  return localStorage.getItem(accessTokenStorageKey)
 }
 
-async function ensureCsrfCookie(): Promise<void> {
-  if (!csrfRequest) {
-    csrfRequest = fetch(`${apiRoot}/sanctum/csrf-cookie`, {
-      credentials: 'include',
-      headers: jsonHeaders,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw normalizeApiError(
-            { message: texts.errors.csrf },
-            response.status,
-          )
-        }
-      })
-      .catch((error: unknown) => {
-        csrfRequest = undefined
-        throw normalizeApiError(error)
-      })
-  }
+export function setAccessToken(token: string): void {
+  localStorage.setItem(accessTokenStorageKey, token)
+}
 
-  await csrfRequest
+export function clearAccessToken(): void {
+  localStorage.removeItem(accessTokenStorageKey)
 }
 
 /**
@@ -69,38 +28,27 @@ async function ensureCsrfCookie(): Promise<void> {
  */
 const jsonHeaders = { Accept: 'application/json' }
 
-export const api = createClient<ApiPaths>({
+export const api = createClient<paths>({
   baseUrl: apiBaseUrl,
-  credentials: 'include',
   headers: jsonHeaders,
 })
 
 api.use({
-  onRequest: async ({ request }) => {
-    if (!['GET', 'HEAD', 'OPTIONS'].includes(request.method.toUpperCase())) {
-      await ensureCsrfCookie()
-      let token = readCsrfToken()
-      if (!token) {
-        csrfRequest = undefined
-        await ensureCsrfCookie()
-        token = readCsrfToken()
-      }
-      if (!token) {
-        csrfRequest = undefined
-        throw normalizeApiError({ message: texts.errors.csrf }, 419)
-      }
-      request.headers.set('X-XSRF-TOKEN', token)
-    }
+  onRequest: ({ request }) => {
+    const token = getAccessToken()
+    if (token) request.headers.set('Authorization', `Bearer ${token}`)
     return request
   },
   onResponse: ({ request, response }) => {
     if (response.status === 401) {
       const path = new URL(request.url).pathname
-      const isAuthBootstrap =
-        path.endsWith('/v1/auth/login') ||
-        path.endsWith('/v1/auth/me') ||
-        path.endsWith('/v1/auth/logout')
-      if (!isAuthBootstrap) {
+      if (!path.endsWith('/v1/auth/token')) {
+        clearAccessToken()
+      }
+      if (
+        !path.endsWith('/v1/auth/token') &&
+        !path.endsWith('/v1/auth/logout')
+      ) {
         window.dispatchEvent(new Event('sge:session-expired'))
       }
     }

@@ -39,13 +39,10 @@ async function loadApi(
       const request =
         input instanceof Request ? input : new Request(input, init)
       requests.push(request.clone())
-      if (request.url.includes('/sanctum/csrf-cookie')) {
-        return new Response(null, { status: 204 })
-      }
       return respond(request)
     }),
   )
-  document.cookie = 'XSRF-TOKEN=csrf-token; path=/'
+  localStorage.setItem('sge_access_token', 'token-de-prueba')
   const api = await import('./payments-api')
   return { api, requests }
 }
@@ -72,10 +69,10 @@ describe('payments API', () => {
   afterEach(() => {
     vi.unstubAllGlobals()
     vi.restoreAllMocks()
-    document.cookie = 'XSRF-TOKEN=; Max-Age=0; path=/'
+    localStorage.clear()
   })
 
-  it('envía Idempotency-Key, X-XSRF-TOKEN y Accept al registrar', async () => {
+  it('envía Idempotency-Key, Bearer y Accept al registrar', async () => {
     const { api, requests } = await loadApi(() =>
       jsonResponse(registrationResponse, 201),
     )
@@ -87,7 +84,7 @@ describe('payments API', () => {
     )
     expect(request).toBeDefined()
     expect(request?.headers.get('idempotency-key')).toBe('stable-key')
-    expect(request?.headers.get('x-xsrf-token')).toBe('csrf-token')
+    expect(request?.headers.get('authorization')).toBe('Bearer token-de-prueba')
     expect(request?.headers.get('accept')).toBe('application/json')
     const bodyText = await request?.clone().text()
     expect(bodyText).toContain('"monto":250.00')
@@ -284,7 +281,7 @@ describe('payments API', () => {
     expect(await request?.clone().json()).toEqual({
       motivo: 'Registro duplicado',
     })
-    expect(request?.headers.get('x-xsrf-token')).toBe('csrf-token')
+    expect(request?.headers.get('authorization')).toBe('Bearer token-de-prueba')
   })
 
   it('sube un voucher como multipart y valida el pago devuelto', async () => {
@@ -304,7 +301,7 @@ describe('payments API', () => {
     expect(result.voucher_disponible).toBe(true)
     expect(body).toContain('name="voucher"')
     expect(body).toContain('Content-Type: application/pdf')
-    expect(request?.headers.get('x-xsrf-token')).toBe('csrf-token')
+    expect(request?.headers.get('authorization')).toBe('Bearer token-de-prueba')
   })
 
   it('valida la respuesta y normaliza los totales del estado de cuenta', async () => {

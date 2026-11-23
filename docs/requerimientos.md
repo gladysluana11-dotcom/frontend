@@ -26,7 +26,7 @@ Plataforma SaaS multi-colegio: SPA web (React + TypeScript), API REST (Laravel) 
 
 - Repositorio único con dos proyectos: `backend/` (Laravel 12, PHP 8.2+, solo API, MySQL 8) y `frontend/` (React + TypeScript estricto, Vite, React Router, TanStack Query, React Hook Form + Zod, Tailwind CSS + shadcn/ui).
 - Las reglas de negocio viven solo en el backend. El frontend nunca duplica cálculos de saldos, vacantes ni permisos.
-- API REST en `/api/v1` con Laravel Sanctum: cookie de sesión HttpOnly + CSRF para la SPA y tokens personales para el móvil. Nada de tokens en localStorage.
+- API REST en `/api/v1` con tokens personales de Laravel Sanctum para la SPA y la app móvil. La SPA conserva el token en localStorage y lo envía como `Authorization: Bearer`; no depende de cookies cross-site ni CSRF.
 - Contrato OpenAPI generado desde el código (Scramble); el frontend genera sus tipos TypeScript desde ese contrato.
 - Multi-colegio: base de datos compartida con `colegio_id` en toda tabla de datos del colegio y global scope en los modelos. El colegio nunca llega como parámetro del request; lo determina el usuario autenticado.
 - La SPA se sirve en el subdominio del colegio, que solo se usa para mostrar su identidad visual; el login valida que el usuario pertenezca a ese colegio.
@@ -301,7 +301,7 @@ Plataforma SaaS multi-colegio: SPA web (React + TypeScript), API REST (Laravel) 
 | Escalabilidad | RNF-17 | Frontend estático sin estado en el servidor; API sin estado de sesión en disco local, tareas pesadas (reportes, correos) en cola, índices con colegio_id, y ruta de migración a VPS o nube sin reescritura. |
 | Compatibilidad | RNF-18 | PHP 8.2 o superior y MySQL 8 o MariaDB 10.6 o superior, disponibles en cPanel. Node.js 20 o 22 LTS solo en desarrollo y para compilar el frontend; no se requiere en el servidor. |
 | Frontend | RNF-19 | Carga inicial de la SPA en menos de 3 s en red 4G; JavaScript inicial menor a 300 KB comprimido, con carga diferida por módulo; archivos con nombre versionado para el caché. |
-|  | RNF-20 | Sin tokens en localStorage; cookies HttpOnly, Secure y SameSite; política de seguridad de contenido (CSP); no usar contenido HTML sin sanitizar; npm audit sin vulnerabilidades altas o críticas antes de cada despliegue. |
+|  | RNF-20 | Token personal de la SPA guardado en localStorage y enviado solo como `Authorization: Bearer` por HTTPS; política de seguridad de contenido (CSP); no usar contenido HTML sin sanitizar; npm audit sin vulnerabilidades altas o críticas antes de cada despliegue. |
 |  | RNF-21 | Accesibilidad básica WCAG 2.1 nivel AA en los flujos críticos: inicio de sesión, matrícula y registro de pagos. |
 
 ## 9. Fases de entrega
